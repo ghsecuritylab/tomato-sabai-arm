@@ -12,10 +12,15 @@ endif
 OBJS = httpd.o cgi.o tomato.o version.o 
 OBJS += misc.o dhcp.o upgrade.o traceping.o parser.o upnp.o ctnf.o
 OBJS += nvram.o log.o webio.o wl.o devlist.o ddns.o config.o bwm.o
+OBJS += sabaisub.o sabaivpn.o sabaivpn_ovpn.o sabaivpn_dual.o sabaivpn_pptp.o sabaivpn_vpns.o sabaivpn_vypr.o
 OBJS += blackhole.o utf8.o
 OBJS += cpuinfo.o
-
 OBJS += iptraffic.o
+
+ifeq ($(TCONFIG_PPTPD),y)
+OBJS += pptpd.o
+endif
+
 ifeq ($(TCONFIG_USB),y)
 OBJS += usb.o
 endif
@@ -31,9 +36,7 @@ ifeq ($(FULL_OPENSSL),y)
 LIBS += -L$(TOP)/openssl -lssl -lcrypto
 endif
 
-ifeq ($(TCONFIG_PPTPD),y)
-OBJS += pptpd.o
-endif
+
 
 ifeq ($(TCONFIG_BCMARM),y)
 LIBS += -lgcc_s

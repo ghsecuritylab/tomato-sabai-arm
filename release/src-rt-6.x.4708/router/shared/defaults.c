@@ -27,7 +27,7 @@ struct nvram_tuple router_defaults[] = {
 	// LAN TCP/IP parameters
 	{ "lan_dhcp",			"0"				, 0 },	// DHCP client [static|dhcp]
 	{ "lan_proto",			"dhcp"				, 0 },	// DHCP server [static|dhcp]  //Barry add 2004 09 16
-	{ "lan_ipaddr",			"192.168.1.1"			, 0 },	// LAN IP address
+	{ "lan_ipaddr",			"192.168.199.1"			, 0 },	// LAN IP address
 	{ "lan_netmask",		"255.255.255.0"			, 0 },	// LAN netmask
 	{ "lan_wins",			""				, 0 },	// x.x.x.x x.x.x.x ...
 	{ "lan_domain",			""				, 0 },	// LAN domain name
@@ -63,20 +63,12 @@ struct nvram_tuple router_defaults[] = {
 	{ "wan_netmask",		"0.0.0.0"			, 0 },	// WAN netmask
 	{ "wan_gateway",		"0.0.0.0"			, 0 },	// WAN gateway
 	{ "wan_gateway_get",		"0.0.0.0"			, 0 },	// default gateway for PPP
-	{ "wan_dns",			""				, 0 },	// x.x.x.x x.x.x.x ...
-#ifdef TCONFIG_DNSSEC
-	{ "dnssec_enable",		"0"				, 0 },
-#endif
+	{ "wan_dns",			"4.2.2.2 8.8.8.8 208.67.222.222"				, 0 },	// x.x.x.x x.x.x.x ...
+
 #ifdef TCONFIG_DNSCRYPT
-	{ "dnscrypt_proxy",		"0"				, 0 },
-	{ "dnscrypt_priority",		"1"				, 0 }, // 0=none, 1=strict-order, 2=no-resolv
-	{ "dnscrypt_port",		"40"				, 0 }, // local port
-	{ "dnscrypt_resolver",		"opendns"			, 0 }, // default resolver
-	{ "dnscrypt_log",		"99"				, 0 }, // log level
-	{ "dnscrypt_manual",		"0"				, 0 }, // Set manual resolver
-	{ "dnscrypt_provider_name",	""				, 0 }, // Set manual provider name
-	{ "dnscrypt_provider_key",	""				, 0 }, // Set manual provider key
-	{ "dnscrypt_resolver_address",	""				, 0 }, // Set manual resolver address
+	{ "dnscrypt_proxy",		""			,0	},
+	{ "dnscrypt_port",		"40"		,0	}, // local port
+	{ "dnscrypt_cmd",		"-m 99"		,0	}, // optional arguments
 #endif
 	{ "wan_wins",			""				, 0 },	// x.x.x.x x.x.x.x ...
 	{ "wan_lease",			"86400"				, 0 },	// WAN lease time in seconds
@@ -87,7 +79,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "wan_unit",			"0"				, 0 },	// Last configured connection
 
 	// DHCP server parameters
-	{ "dhcp_start",			"2"				, 0 },	//
+	{ "dhcp_start",			"100"				, 0 },	//
 	{ "dhcp_num",			"50"				, 0 },	//
 	{ "dhcpd_startip",		"" 				, 0 },	// if empty, tomato will use dhcp_start/dchp_num for better compatibility
 	{ "dhcpd_endip",		"" 				, 0 },	// "
@@ -171,8 +163,8 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_corerev",			""				, 0 },	// Current core revision
 	{ "wl_phytypes",		""				, 0 },	// List of supported wireless bands (e.g. "ga")
 	{ "wl_radioids",		""				, 0 },	// List of radio IDs
-	{ "wl_ssid",			"Tomato24"			, 0 },	// Service set ID (network name)
-	{ "wl1_ssid",			"Tomato50"			, 0 },
+	{ "wl_ssid",			"Sabai24"			, 0 },	// Service set ID (network name)
+	{ "wl1_ssid",			"Sabai58"			, 0 },
 	{ "wl_country_code",		""				, 0 },		// Country (default obtained from driver)
 	{ "wl_radio",			"1"				, 0 },	// Enable (1) or disable (0) radio
 	{ "wl1_radio",			"1"				, 0 },	// Enable (1) or disable (0) radio
@@ -221,9 +213,9 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_vifs",			""				, 0 },	// multiple/virtual BSSIDs
 
 	// WPA parameters
-	{ "wl_security_mode",		"disabled"			, 0 },	// WPA mode (disabled|radius|wpa_personal|wpa_enterprise|wep|wpa2_personal|wpa2_enterprise) for WEB	// Add
+	{ "wl_security_mode",		"wpa2_personal"			, 0 },	// WPA mode (disabled|radius|wpa_personal|wpa_enterprise|wep|wpa2_personal|wpa2_enterprise) for WEB	// Add
 	{ "wl_auth_mode",		"none"				, 0 },	// Network authentication mode (radius|none)
-	{ "wl_wpa_psk",			""				, 0 },	// WPA pre-shared key
+	{ "wl_wpa_psk",			"sabaipass123"				, 0 },	// WPA pre-shared key
 	{ "wl_wpa_gtk_rekey",		"3600"				, 0 },	// WPA GTK rekey interval	// Modify
 	{ "wl_radius_ipaddr",		""				, 0 },	// RADIUS server IP address
 	{ "wl_radius_key",		""				, 0 },	// RADIUS shared secret
@@ -246,7 +238,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_wme_ap_vo",		"3 7 1 3264 1504 off off"	, 0 },	// WME AP AC_VO paramters
 
 	{ "wl_wme_no_ack",		"off"				, 0 },	// WME No-Acknowledgmen mode
-	{ "wl_wme_apsd",		"on"				, 0 },	// WME APSD mode
+	{ "wl_wme_apsd",		"off"				, 0 },	// WME APSD mode
 	{ "wl_wme_bss_disable",		"0"				, 0 },	// WME BSS disable advertising (off|on)
 
 	/* Per AC Tx parameters */
@@ -308,7 +300,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_radio_pwrsave_quiet_time","1800"				, 0 },	// Quiet time for power save
 	{ "wl_radio_pwrsave_pps",	"10"				, 0 },	// Packets per second threshold for power save
 	{ "wl_radio_pwrsave_on_time",	"50"				, 0 },	// Radio on time for power save
-	{ "acs_mode", 			"legacy"			, 0 },	/* Legacy mode if ACS is enabled */
+
 	// misc
 	{ "wl_wmf_bss_enable",		"0"				, 0 },	// Wireless Multicast Forwarding Enable/Disable
 	{ "wl_rifs_advert",		"auto"				, 0 },	// RIFS mode advertisement
@@ -354,33 +346,34 @@ struct nvram_tuple router_defaults[] = {
 	{ "ddnsx_refresh",		"28"				, 0 },
 
 // basic-ident
-	{ "router_name",		"TomatoUSB"			, 0 },
-	{ "wan_hostname",		"unknown"			, 0 },
+	{ "router_name",		"Sabai"			, 0 },
+	{ "wan_hostname",		"SabaiRouter"			, 0 },
 	{ "wan_domain",			""				, 0 },
 
 // basic-time
-	{ "tm_sel",			"CET-1CEST,M3.5.0/2,M10.5.0/3"	, 0 },
-	{ "tm_tz",			"CET-1CEST,M3.5.0/2,M10.5.0/3"	, 0 },
+	{ "tm_sel",			"EST5EDT,M3.2.0/2,M11.1.0/2"	, 0 },
+	{ "tm_tz",			"EST5EDT,M3.2.0/2,M11.1.0/20"	, 0 },
 	{ "tm_dst",			"1"				, 0 },
-	{ "ntp_updates",		"4"				, 0 },
+	{ "ntp_updates",		"24"				, 0 },
 	{ "ntp_tdod",			"0"				, 0 },
-	{ "ntp_server",			"0.europe.pool.ntp.org 1.europe.pool.ntp.org 2.europe.pool.ntp.org" , 0 },
+	{ "ntp_server",			"0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org" , 0 },
 	{ "ntp_kiss",			""				, 0 },
 	{ "ntp_kiss_ignore",		""				, 0 },
 
 // basic-static
 	{ "dhcpd_static",		""				, 0 },
 	{ "dhcpd_static_only",		"0"				, 0 },
+	{ "arpbind_listed",		"0"			,0	},	// AB - Enable static ARP for all devices on list
 // basic-wfilter
 	{ "wl_maclist",			""				, 0 },	// xx:xx:xx:xx:xx:xx ...
 	{ "wl_macmode",			"disabled"			, 0 },
 	{ "macnames",			""				, 0 },
 
 // advanced-ctnf
-	{ "ct_tcp_timeout",		""				, 0 },
-	{ "ct_udp_timeout",		""				, 0 },
-	{ "ct_timeout",			""				, 0 },
-	{ "ct_max",			""				, 0 },
+	{ "ct_tcp_timeout",		"0 1800 30 20 20 20 10 20 20 0"				, 0 },
+	{ "ct_udp_timeout",		"30 180"				, 0 },
+	{ "ct_timeout",			"10 10"				, 0 },
+	{ "ct_max",			"8192"				, 0 },
 	{ "nf_ttl",			"0"				, 0 },
 	{ "nf_l7in",			"1"				, 0 },
 #ifdef LINUX26
@@ -443,7 +436,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "udpxy_clients",		"3"				, 0 },
 	{ "udpxy_port",			"4022"				, 0 },
 	{ "ne_syncookies",		"0"				, 0 },	// tcp_syncookies
-	{ "DSCP_fix_enable",		"1"				, 0 },	// Comacst DSCP fix
 	{ "ne_snat",			"0"				, 0 },	// use SNAT instead of MASQUERADE
 	{ "dhcp_pass",			"1"				, 0 },	// allow DHCP responses
 	{ "ne_shlimit",			"1,3,60"			, 0 },	//shibby - enable limit connection attempts for sshd
@@ -471,7 +463,7 @@ struct nvram_tuple router_defaults[] = {
 
 // advanced-wireless
 	{ "wl_txant",			"3"				, 0 },
-	{ "wl_txpwr",			"42"				, 0 },
+	{ "wl_txpwr",			"0"				, 0 },
 	{ "wl_maxassoc",		"128"				, 0 },	// Max associations driver could support
 	{ "wl_bss_maxassoc",		"128"				, 0 },
 	{ "wl_distance",		""				, 0 },
@@ -493,6 +485,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "upnp_secure",		"1"				, 0 },
 	{ "upnp_port",			"0"				, 0 },
 	{ "upnp_ssdp_interval",		"60"				, 0 },	// SSDP interval
+	{ "upnp_max_age",		"180"			,0	},	// Max age	
 	{ "upnp_mnp",			"0"				, 0 },
 	{ "upnp_custom",		""				, 0 },
 
@@ -546,8 +539,8 @@ struct nvram_tuple router_defaults[] = {
 #endif
 
 // admin-access
-	{ "http_username",		""				, 0 },	// Username
-	{ "http_passwd",		"admin"				, 0 },	// Password
+	{ "http_username",		"admin"				, 0 },	// Username
+	{ "http_passwd",		"sabaipass123"				, 0 },	// Password
 	{ "remote_management",	"0"					, 0 },	// Remote Management [1|0]
 	{ "remote_mgt_https",	"0"					, 0 },	// Remote Management use https [1|0]
 	{ "http_wanport",		"8080"				, 0 },	// WAN port to listen on
@@ -560,18 +553,16 @@ struct nvram_tuple router_defaults[] = {
 	{ "https_crt_file",		""				, 0 },
 	{ "https_crt",			""				, 0 },
 	{ "web_wl_filter",		"0"				, 0 },	// Allow/Deny Wireless Access Web
-	{ "web_css",			"openlinksys"			, 0 },
-	{ "web_dir",			"default"			, 0 },  // jffs, opt, tmp or default (/www)
-	{ "ttb_css",			"example"			, 0 },	//Tomato Themes Base
+	{ "web_css",			"sabai"			, 0 },
 	{ "web_svg",			"1"				, 0 },
 	{ "telnetd_eas",		"1"				, 0 },
 	{ "telnetd_port",		"23"				, 0 },
-	{ "sshd_eas",			"1"				, 0 }, //shibby - enable sshd by default
+	{ "sshd_eas",			"0"				, 0 }, //shibby - enable sshd by default
 	{ "sshd_pass",			"1"				, 0 },
 	{ "sshd_port",			"22"				, 0 },
 	{ "sshd_remote",		"0"				, 0 },
-	{ "sshd_motd",			"1"				, 0 },
-	{ "sshd_rport",			"22"				, 0 },
+	{ "sshd_motd",			"0"				, 0 },
+	{ "sshd_rport",			"2222"				, 0 },
 	{ "sshd_authkeys",		""				, 0 },
 	{ "sshd_hostkey",		""				, 0 },
 	{ "sshd_dsskey",		""				, 0 },
@@ -579,7 +570,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "rmgt_sip",			""				, 0 },	// remote management: source ip address
 
 	{ "http_id",			""				, 0 },
-	{ "web_mx",			"status,bwm"			, 0 },
+	{ "web_mx",			""			, 0 },
 	{ "web_pb",			""				, 0 },
 
 // admin-bwm
@@ -594,7 +585,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "rstats_bak",			"0"				, 0 },
 
 // admin-ipt
-	{ "cstats_enable",		"1"				, 0 },
+	{ "cstats_enable",		"0"				, 0 },
 	{ "cstats_path",		""				, 0 },
 	{ "cstats_stime",		"48"				, 0 },
 	{ "cstats_offset",		"1"				, 0 },
@@ -612,7 +603,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "sesx_b2",			"4"				, 0 },
 	{ "sesx_b3",			"4"				, 0 },
 	{ "sesx_script",
-		"[ $1 -ge 20 ] && telnetd -p 233 -l /bin/sh\n"
+		"nvram erase && reboot"
 	, 0 },
 	{ "script_brau",
 		"if [ ! -e /tmp/switch-start ]; then\n"
@@ -648,16 +639,14 @@ struct nvram_tuple router_defaults[] = {
 	{ "log_wm",			"0"				, 0 },
 	{ "log_wmtype",			"0"				, 0 },
 	{ "log_wmip",			""				, 0 },
-	{ "log_wmdmax",			"2000"				, 0 },
-	{ "log_wmsmax",			"2000"				, 0 },
-	{ "webmon_bkp",			"0"				, 0 },
-	{ "webmon_dir",			"/tmp"				, 0 },
-	{ "webmon_shrink",		"0"				, 0 },
+	{ "log_wmdmax",			"300"				, 0 },
+	{ "log_wmsmax",			"300"				, 0 },
 
 // admin-debugging
 	{ "debug_nocommit",		"0"				, 0 },
 	{ "debug_cprintf",		"0"				, 0 },
 	{ "debug_cprintf_file",		"0"				, 0 },
+//	{ "debug_keepfiles",		"0"		,0		},
 	{ "console_loglevel",		"1"				, 0 },
 	{ "t_cafree",			"1"				, 0 },
 	{ "t_hidelr",			"0"				, 0 },
@@ -681,29 +670,28 @@ struct nvram_tuple router_defaults[] = {
 
 #ifdef TCONFIG_USB
 // nas-usb - !!TB
-	{ "usb_enable",			"1"				, 0 },
+	{ "usb_enable",			"0"				, 0 },
 	{ "usb_uhci",			"0"				, 0 },
 	{ "usb_ohci",			"0"				, 0 },
 	{ "usb_usb2",			"1"				, 0 },
-	{ "usb_usb3",			"1"				, 0 },
 #if defined(LINUX26) && defined(TCONFIG_MICROSD)
 	{ "usb_mmc",			"-1"				, 0 },
 #endif
 	{ "usb_irq_thresh",		"0"				, 0 },
 	{ "usb_storage",		"1"				, 0 },
-	{ "usb_printer",		"0"				, 0 },
+	{ "usb_printer",		"1"				, 0 },
 	{ "usb_printer_bidirect",	"0"				, 0 },
 	{ "usb_ext_opt",		""				, 0 },
 	{ "usb_fat_opt",		""				, 0 },
 	{ "usb_ntfs_opt",		""				, 0 },
 	{ "usb_fs_ext3",		"1"				, 0 },
-	{ "usb_fs_ext4",		"1"				, 0 },
 	{ "usb_fs_fat",			"1"				, 0 },
 #ifdef TCONFIG_NTFS
 	{ "usb_fs_ntfs",		"1"				, 0 },
 #endif
 #ifdef TCONFIG_HFS
 	{ "usb_fs_hfs",			"0"				, 0 }, //!Victek
+	{ "usb_fs_hfsplus",		"0"				, 0}, //!Victek
 #endif
 	{ "usb_automount",		"1"				, 0 },
 #if 0
@@ -800,8 +788,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "sch_c1_cmd",			""				, 0 },
 	{ "sch_c2_cmd",			""				, 0 },
 	{ "sch_c3_cmd",			""				, 0 },
-	{ "sch_c4_cmd",			""				, 0 },
-	{ "sch_c5_cmd",			""				, 0 },
 
 // admin-script
 	{ "script_init",		""				, 0 },
@@ -813,6 +799,10 @@ struct nvram_tuple router_defaults[] = {
 	{ "nfs_enable",			"0"				, 0 },
 	{ "nfs_exports",		""				, 0 },
 #endif
+
+//#ifdef TCONFIG_UPS
+//	{ "ups_enable",			"0"				},
+//#endif
 
 #ifdef TCONFIG_OPENVPN
 // vpn
@@ -849,7 +839,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "vpn_server1_crt",      ""              , 0 },
 	{ "vpn_server1_key",      ""              , 0 },
 	{ "vpn_server1_dh",       ""              , 0 },
-	{ "vpn_server1_br",       "br0"           , 0 },
 	{ "vpn_server2_poll",     "0"             , 0 },
 	{ "vpn_server2_if",       "tun"           , 0 },
 	{ "vpn_server2_proto",    "udp"           , 0 },
@@ -880,7 +869,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "vpn_server2_crt",      ""              , 0 },
 	{ "vpn_server2_key",      ""              , 0 },
 	{ "vpn_server2_dh",       ""              , 0 },
-	{ "vpn_server2_br",       "br0"           , 0 },
 	{ "vpn_client_eas",       ""              , 0 },
 	{ "vpn_client1_poll",     "0"             , 0 },
 	{ "vpn_client1_if",       "tun"           , 0 },
@@ -908,7 +896,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "vpn_client1_ca",       ""              , 0 },
 	{ "vpn_client1_crt",      ""              , 0 },
 	{ "vpn_client1_key",      ""              , 0 },
-	{ "vpn_client1_br",       "br0"           , 0 },
 	{ "vpn_client2_poll",     "0"             , 0 },
 	{ "vpn_client2_if",       "tun"           , 0 },
 	{ "vpn_client2_bridge",   "1"             , 0 },
@@ -935,7 +922,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "vpn_client2_ca",       ""              , 0 },
 	{ "vpn_client2_crt",      ""              , 0 },
 	{ "vpn_client2_key",      ""              , 0 },
-	{ "vpn_client2_br",       "br0"           , 0 },
 #endif	// vpn
 #ifdef TCONFIG_PPTPD
 	{ "pptp_client_enable",   "0"             , 0 },
@@ -954,7 +940,15 @@ struct nvram_tuple router_defaults[] = {
 	{ "pptp_client_custom",   ""              , 0 },
 	{ "pptp_client_dfltroute","0"             , 0 },
 #endif
+// Sabai defaults
+	{ "srcnvrv",			""		},
+	{ "vpn_service",		""		},
+	{ "srcipt",			"blog.sabaitechnology.com"	},
+	{ "srcreg",			"blog.sabaitechnology.com"	},
+	{ "srcupd",			"blog.sabaitechnology.com"	},
 
+	{ "ovpn_on",			"0"	,0	},
+	{ "pptp_on",			"0"	,0	},
 #ifdef TCONFIG_TINC
 	{"tinc_wanup",			"0"		, 0 },
 	{"tinc_name",			""		, 0 },
@@ -976,6 +970,10 @@ struct nvram_tuple router_defaults[] = {
 	{"tinc_subnet_down",		""		, 0 },
 #endif
 
+	{ "vpn_user",			""	,0	},
+	{ "vpn_pass",			""	,0	},
+	{ "vpn_fix",			""	,0	},
+	{ "vpn_server",			""	,0	},
 #ifdef TCONFIG_BT
 // nas-transmission
 	{ "bt_enable",			"0"				, 0 },
@@ -1024,6 +1022,9 @@ struct nvram_tuple router_defaults[] = {
 	{ "bt_message",			"2"				, 0 },
 #endif
 
+	{ "pptp_mppe",			"1"		,0},
+	{ "pptp_stateful",		"0"		,0},
+	{ "pptp_defgw",			"1"		,0},
 // new_qoslimit
 	{ "new_qoslimit_enable",	"0"				, 0 },
 	{ "new_qoslimit_obw",		""				, 0 },
@@ -1055,7 +1056,13 @@ struct nvram_tuple router_defaults[] = {
 	{ "limit_br3_ulr",		""				, 0 },
 	{ "limit_br3_prio",		"2"				, 0 },
 
+	{ "ovpn_type",			""	,0	},
+	{ "ovpn_file",			""	,0	},
 
+	{ "ovpn_si",			""		,0},
+	{ "ovpn_up",			""		,0},
+	{ "ovpn_dn",			""		,0},
+	{ "ovpn_cf",			""		,0},
 // NoCatSplash. !!Victek
 #ifdef TCONFIG_NOCAT
 	{ "NC_enable",			"0"				, 0 }, // enable NoCatSplash
@@ -1076,6 +1083,14 @@ struct nvram_tuple router_defaults[] = {
 	{ "NC_BridgeLAN",		"br0"				, 0 },
 #endif
 
+	{ "gw_run",			"0"	,0	},
+	{ "gw_on",			"0"	,0	},
+	{ "gw_vpn",			""	,0	},
+	{ "gw_local",			""		,0},
+	{ "gw_accel",			""		,0},
+	{ "gw_def",			"0"		,0},
+	{ "ac_on",			"0"		,0},
+	{ "ac_ip",			"2"		,0},
 //Tomato RAF - NGINX
 #ifdef TCONFIG_NGINX
 	{"nginx_enable",		"0"				}, // NGinX enabled
@@ -1096,6 +1111,7 @@ struct nvram_tuple router_defaults[] = {
 	{"nginx_overridefile",		"/path/to/nginx.conf"		}, // user/group
 #endif
 
+	{ "wan_route",	 		"0"		,0},
 #ifdef TCONFIG_TOR
 	{ "tor_enable",			"0"				, 0 },
 	{ "tor_socksport",		"9050"				, 0 },
@@ -1107,6 +1123,42 @@ struct nvram_tuple router_defaults[] = {
 	{ "tor_custom",			""				, 0 },
 #endif
 
+	{ "reg_info",	 		""	,0	},
+// arpbind
+	{ "arpbind_enable",			"0"		,0	},
+	{ "arpbind_only",			"0"		,0	},
+	{ "arpbind_list",			"" 		,0	},
+
+// new_qoslimit
+	{ "new_qoslimit_enable",		"0"		,0	},
+	{ "new_qoslimit_obw",			""	,0		},
+	{ "new_qoslimit_ibw",			""		,0	},
+	{ "new_qoslimit_rules",			""		,0	},
+	{ "qosl_enable",			"0"		,0	},
+	{ "qosl_tcp",				"0"		,0	},//unlimited
+	{ "qosl_udp",				"0"		,0	},//unlimited
+	{ "qosl_dlc",				""		,0	},
+	{ "qosl_ulc",				""		,0	},
+	{ "qosl_dlr",				""		,0	},
+	{ "qosl_ulr",				""		,0	},
+	{ "limit_br1_enable",			"0"	,0		},
+	{ "limit_br1_dlc",			""		,0	},
+	{ "limit_br1_ulc",			""		,0	},
+	{ "limit_br1_dlr",			""		,0	},
+	{ "limit_br1_ulr",			""		,0	},
+	{ "limit_br1_prio",			"2"		,0	},
+	{ "limit_br2_enable",			"0"	,0		},
+	{ "limit_br2_dlc",			""		,0	},
+	{ "limit_br2_ulc",			""		,0	},
+	{ "limit_br2_dlr",			""		,0	},
+	{ "limit_br2_ulr",			""		,0	},
+	{ "limit_br2_prio",			"2"		,0	},
+	{ "limit_br3_enable",			"0"	,0		},
+	{ "limit_br3_dlc",			""		,0	},
+	{ "limit_br3_ulc",			""		,0	},
+	{ "limit_br3_dlr",			""		,0	},
+	{ "limit_br3_ulr",			""		,0	},
+	{ "limit_br3_prio",			"2"		,0	},
 	{ 0, 0, 0}
 };
 
