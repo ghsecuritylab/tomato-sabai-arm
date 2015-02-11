@@ -1920,6 +1920,11 @@ int start_firewall(void)
 
 	run_nvscript("script_fire", NULL, 1);
 
+//* SABAI GW BEGIN */
+//	char *args[] = { "/bin/sh", "/www/gw.sh", "init", NULL, NULL };
+//	_eval(args, NULL, 0, NULL);
+//* SABAI GW END */
+
 #ifdef LINUX26
 	allow_fastnat("firewall", can_enable_fastnat);
 	try_enabling_fastnat();

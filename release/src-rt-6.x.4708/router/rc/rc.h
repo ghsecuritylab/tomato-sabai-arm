@@ -559,6 +559,8 @@ extern void stop_nginxfp();
 extern void start_tomatoanon(); 
 extern void stop_tomatoanon(); 
 
+// sabaigw.c
+extern void do_sabaigw(bool);
 #endif
 
 

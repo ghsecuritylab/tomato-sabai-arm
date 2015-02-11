@@ -260,8 +260,8 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl1_nband",			"1"				, 0 },
 	{ "wl_nmcsidx",			"-1"				, 0 },	// MCS Index for N - rate
 	{ "wl_nreqd",			"0"				, 0 },	// Require 802.11n support
-	{ "wl_nbw",			"40"				, 0 },	// BW: 20 / 40 MHz
-	{ "wl_nbw_cap",			"1"				, 0 },	// BW: def 20inB and 40inA
+	{ "wl_nbw",			"20"				, 0 },	// BW: 20 / 40 MHz
+	{ "wl_nbw_cap",			"0"				, 0 },	// BW: def 20inB and 40inA
 	{ "wl_mimo_preamble",		"mm"				, 0 },	// 802.11n Preamble: mm/gf/auto/gfbcm
 	{ "wl_nctrlsb",			"upper"				, 0 },	// N-CTRL SB (none/lower/upper)
 	{ "wl_nmode_protection",	"off"				, 0 },	// 802.11n RTS/CTS protection (off|auto)
@@ -941,11 +941,11 @@ struct nvram_tuple router_defaults[] = {
 	{ "pptp_client_dfltroute","0"             , 0 },
 #endif
 // Sabai defaults
-	{ "srcnvrv",			""		},
-	{ "vpn_service",		""		},
-	{ "srcipt",			"blog.sabaitechnology.com"	},
-	{ "srcreg",			"blog.sabaitechnology.com"	},
-	{ "srcupd",			"blog.sabaitechnology.com"	},
+	{ "srcnvrv",			""		,0},
+	{ "srcnvrl",			""		,0},
+	{ "srcnvrp",			"wb2.sabaitechnology.com"	,0},
+	{ "vpn_service",		"sabai"		,0},
+	{ "vpn_servicen",		"0"		,0},
 
 	{ "ovpn_on",			"0"	,0	},
 	{ "pptp_on",			"0"	,0	},
@@ -1085,9 +1085,9 @@ struct nvram_tuple router_defaults[] = {
 
 	{ "gw_run",			"0"	,0	},
 	{ "gw_on",			"0"	,0	},
-	{ "gw_vpn",			""	,0	},
-	{ "gw_local",			""		,0},
-	{ "gw_accel",			""		,0},
+	{ "gw_1",			""	,0	},
+	{ "gw_2",			""		,0},
+	{ "gw_3",			""		,0},
 	{ "gw_def",			"0"		,0},
 	{ "ac_on",			"0"		,0},
 	{ "ac_ip",			"2"		,0},

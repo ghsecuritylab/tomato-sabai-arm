@@ -336,20 +336,20 @@ const struct mime_handler mime_handlers[] = {
 //	/* ----------------------- SABAI VPN Proprietary Functions BEGIN ----------------------- */
 	{ "vpna.cgi",		mime_javascript,	0,	wi_generic_noid,	wo_sabaai_vpna,		1 },
 	{ "sabaai-init.cgi",	NULL,			0,	wi_generic,		wo_sabaai_register,	1 },
-	{ "s_grabovpn.cgi",	NULL,			0,	wi_grabovpn_script,	NULL,			1 },
 	{ "s_sabaipptp.cgi",	NULL,			0,	wi_generic,		wo_sabaai_PPTP,		1 },
+	{ "s_sabaigw.cgi",	NULL,			0,	wi_generic,		wo_sabaai_gw,		1 },
+	{ "s_grabovpn.cgi",	NULL,			0,	wi_grabovpn_script,	NULL,			1 },
 	{ "s_startovpn.cgi",	NULL,			0,	NULL,			wo_sabaai_OVPN_start,	1 },
 	{ "s_eraseovpn.cgi",	NULL,			0,	NULL,			wo_sabaai_OVPN_erase,	1 },
 	{ "s_stopovpn.cgi",	NULL,			0,	NULL,			wo_sabaai_OVPN_stop,	1 },
 	{ "s_vpns.cgi",		NULL,			0,	wi_generic,		wo_sabaai_vpns,		1 },
 	{ "s_vypr.cgi",		NULL,			0,	wi_generic,		wo_sabaai_vypr,		1 },
-	{ "s_static.cgi",	NULL,			0,	wi_generic,		wo_makeStatic,		1 },
 	{ "s_gethwmac.cgi",	mime_javascript,	0,	wi_generic_noid,	wo_sabaai_hwmac,	1 },
 #ifdef TCONFIG_OPENVPN
 	{ "vpnstatus.cgi",	mime_javascript,			0,	wi_generic,			wo_vpn_status,		1 },
 #endif
 #ifdef TCONFIG_PPTPD
-	{ "pptpd.cgi",		mime_javascript,			0,	wi_generic,			wo_pptpdcmd,		1 },	//!!AB - PPTPD
+	{ "pptpd.cgi",		mime_javascript,				0,	wi_generic,			wo_pptpdcmd,	1 },	//!!AB - PPTPD
 #endif
 #ifdef TCONFIG_USB
 	{ "usbcmd.cgi",			mime_javascript,			0,	wi_generic,		wo_usbcommand,		1 },	//!!TB - USB
@@ -386,11 +386,9 @@ const aspapi_t aspapi[] = {
 	{ "link_starttime",		asp_link_starttime	},
 	{ "lipp",				asp_lipp			},
 	{ "netdev",				asp_netdev			},
-
 	{ "iptraffic",			asp_iptraffic		},
 	{ "iptmon",				asp_iptmon			},
 	{ "ipt_bandwidth",		asp_ipt_bandwidth	},
-
 	{ "notice",				asp_notice			},
 	{ "nv",					asp_nv				},
 	{ "nvram",				asp_nvram 			},
@@ -433,7 +431,7 @@ const aspapi_t aspapi[] = {
 	{ "sabaaiVPN",			asp_sabaaiVPN		},
 	{ "sabaaiMenu",			asp_sabaaiMenu		},
 	{ "sabaaiMSG",			asp_sabai_msg		},
-//	{ "sabaaihash",			asp_sabai_hash		},
+	{ "sabaaiInitToken",		asp_sabai_init_token	},
 	{ "sabaiversion",		asp_sabai_version	},
 	{ "isitsafe",			asp_isitsafe		},
 	{ "isitsabai",			asp_isitsabai		},
@@ -573,10 +571,10 @@ static const nvset_t nvset_list[] = {
 
 	{ "gw_run",			V_01				},
 	{ "gw_on",			V_01				},
-	{ "gw_vpn",			V_TEXT(0, 1024)			},
-	{ "gw_local",			V_TEXT(0, 1024)			},
-	{ "gw_accel",			V_TEXT(0, 1024)			},
 	{ "gw_def",			V_01				},
+	{ "gw_1",			V_TEXT(0, 1024)			},
+	{ "gw_2",			V_TEXT(0, 1024)			},
+	{ "gw_3",			V_TEXT(0, 1024)			},
 	{ "ac_on",			V_01				},
 	{ "ac_ip",			V_OCTET				},
 
@@ -629,7 +627,7 @@ static const nvset_t nvset_list[] = {
 	{ "ppp_demand",			V_01				},
 	{ "ppp_custom",			V_LENGTH(0, 256)		},
 	{ "ppp_idletime",		V_RANGE(0, 1440)	},
-	{ "ppp_redialperiod",		V_RANGE(1, 86400)	},
+	{ "ppp_redialperiod",	V_RANGE(1, 86400)	},
 	{ "ppp_mlppp",			V_01				},
 	{ "mtu_enable",			V_01				},
 	{ "wan_mtu",			V_RANGE(576, 1500)	},
@@ -973,11 +971,10 @@ static const nvset_t nvset_list[] = {
 	{ "wlx_hperx",			V_01				},
 	{ "wl_reg_mode",		V_LENGTH(1, 3)			},	// !!TB - Regulatory: off, h, d
 	{ "wl_mitigation",		V_RANGE(0, 4)			},	// Interference Mitigation Mode (0|1|2|3|4)
-
 	{ "wl_nmode_protection",	V_WORD,				},	// off, auto
 	{ "wl_nmcsidx",			V_RANGE(-2, 32),	},	// -2 - 32
 	{ "wl_obss_coex",		V_01			},
-	{ "wl_wmf_bss_enable",		V_01			},	// Toastman
+	{ "wl_wmf_bss_enable",		V_01				},	// Toastman
 
 // forward-dmz
 	{ "dmz_enable",			V_01				},
@@ -1039,7 +1036,7 @@ static const nvset_t nvset_list[] = {
 	{ "web_wl_filter",		V_01				},
 	{ "web_css",			V_LENGTH(1, 32)		},
 	{ "ttb_css",			V_LENGTH(0, 128)		},
-	{ "web_mx",				V_LENGTH(0, 128)	},
+	{ "web_mx",			V_LENGTH(0, 128)	},
 	{ "http_wanport",		V_PORT				},
 	{ "telnetd_eas",		V_01				},
 	{ "telnetd_port",		V_PORT				},
@@ -1065,12 +1062,12 @@ static const nvset_t nvset_list[] = {
 
 // admin-ipt
 	{ "cstats_enable",		V_01				},
-	{ "cstats_path",		V_LENGTH(0, 48)			},
-	{ "cstats_stime",		V_RANGE(1, 168)			},
-	{ "cstats_offset",		V_RANGE(1, 31)			},
-	{ "cstats_labels",		V_RANGE(0, 2)			},
-	{ "cstats_exclude",		V_LENGTH(0, 512)		},
-	{ "cstats_include",		V_LENGTH(0, 2048)		},
+	{ "cstats_path",		V_LENGTH(0, 48)		},
+	{ "cstats_stime",		V_RANGE(1, 168)		},
+	{ "cstats_offset",		V_RANGE(1, 31)		},
+	{ "cstats_labels",		V_RANGE(0, 2)		},
+	{ "cstats_exclude",		V_LENGTH(0, 512)	},
+	{ "cstats_include",		V_LENGTH(0, 2048)	},
 	{ "cstats_all",			V_01				},
 	{ "cstats_sshut",		V_01				},
 	{ "cstats_bak",			V_01				},
@@ -1098,11 +1095,11 @@ static const nvset_t nvset_list[] = {
 // admin-sched
 	{ "sch_rboot", 			V_TEXT(0, 64)		},
 	{ "sch_rcon", 			V_TEXT(0, 64)		},
-	{ "sch_c1",			V_TEXT(0, 64)		},
+	{ "sch_c1",				V_TEXT(0, 64)		},
 	{ "sch_c1_cmd",			V_TEXT(0, 2048)		},
-	{ "sch_c2",			V_TEXT(0, 64)		},
+	{ "sch_c2",				V_TEXT(0, 64)		},
 	{ "sch_c2_cmd",			V_TEXT(0, 2048)		},
-	{ "sch_c3",			V_TEXT(0, 64)		},
+	{ "sch_c3",				V_TEXT(0, 64)		},
 	{ "sch_c3_cmd",			V_TEXT(0, 2048)		},
 	{ "sch_c4",			V_TEXT(0, 64)		},
 	{ "sch_c4_cmd",			V_TEXT(0, 2048)		},
@@ -1259,7 +1256,7 @@ static const nvset_t nvset_list[] = {
 	{ "ms_sas",			V_01				},
 #endif
 
-//	qos
+// qos
 	{ "qos_enable",			V_01				},
 	{ "qos_pfifo",			V_01				},
 	{ "qos_ack",			V_01				},
@@ -1312,7 +1309,7 @@ static const nvset_t nvset_list[] = {
 	{ "limit_br3_dlc",               V_RANGE(0, 999999)     },
 	{ "limit_br3_prio",              V_RANGE(0, 5)          },
 
-//NotCatSplash. Victek.
+//NoCatSplash. Victek.
 #ifdef TCONFIG_NOCAT
 	{ "NC_enable",			V_01				},
 	{ "NC_Verbosity",		V_RANGE(0, 10)			},
@@ -1474,11 +1471,11 @@ static const nvset_t nvset_list[] = {
 
 #ifdef TCONFIG_PPTPD
 // pptp server
-	{ "pptpd_enable",		V_01			},
+	{ "pptpd_enable",		V_01				},
 	{ "pptpd_remoteip",		V_TEXT(0,24)		},
-	{ "pptpd_forcemppe",		V_01			},
+	{ "pptpd_forcemppe",	V_01				},
 	{ "pptpd_users",		V_TEXT(0, 67*16)	},
-	{ "pptpd_broadcast",		V_TEXT(0,8)		},
+	{ "pptpd_broadcast",	V_TEXT(0,8)			},
 	{ "pptpd_dns1",			V_TEXT(0, 15)		},
 	{ "pptpd_dns2",			V_TEXT(0, 15)		},
 	{ "pptpd_wins1",		V_TEXT(0, 15)		},
@@ -1550,7 +1547,6 @@ wl_ap_ssid
 	{ "pptp_client_dfltroute",V_01                  },
 	{ "pptp_client_stateless",V_01                  },
 #endif
-
 	{ NULL }
 };
 
@@ -1718,6 +1714,12 @@ static int save_variables(int write)
 #ifdef CONFIG_BCMWL6
 	foreach_wif(0, &write, nv_wl_bwcap_chanspec);
 #endif
+
+	char *ous = nvram_safe_get("http_username");
+	char *us = webcgi_safeget("http_username","");
+	if ( (strcmp(us,"")!=0)&&(strcmp(ous,us)!=0) ){
+		nvram_set("http_username",us);
+	}
 
 	char *p1, *p2;
 	if (((p1 = webcgi_get("set_password_1")) != NULL) && (strcmp(p1, "**********") != 0)) {

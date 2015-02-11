@@ -61,7 +61,7 @@ void wi_upgrade(char *url, int len, char *boundary)
 	// skip the rest of the header
 	if (!skip_header(&len)) goto ERROR;
 
-	if (len < (1 * 1024 * 1024)) {
+	if (len < (1048576)) { // 1048576 = 1 * 1024 * 1024
 		error = "Invalid file";
 		goto ERROR;
 	}
