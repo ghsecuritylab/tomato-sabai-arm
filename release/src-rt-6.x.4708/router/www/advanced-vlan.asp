@@ -73,13 +73,7 @@ switch(nvram['boardtype']) {
   case '0x04ef':  // WRT320N/E2000
   case '0x04cf':  // WRT610Nv2/E3000, RT-N16
   case '0xf52c':  // E4200v1
-  case '0xf52a':  // E3200v1
   case '0xf5b2':  // RT-N66
-  case '0x052b':  // WNR3500L v2
-  case '0x05d8':  // Tenda W1800R
-  case '0x058e':  // E900, E800
-  case '0x0646':  // RT-AC56U and RT-AC68U/RT-AC68R
-  case '0x0665':  // R7000
     trunk_vlan_supported = 1;
     break;
   default:
@@ -92,170 +86,129 @@ switch(nvram['boardtype']) {
 // http://wiki.openwrt.org/toh/linksys/start
 // http://wiki.openwrt.org/toh/start
 switch(nvram['boardtype']) {
-	case '0x0646':  // RT-AC56 && RT-AC68
-	case '0x0665':  //R7000
-		if ((nvram['boardrev'] == '0x1100') && (nvram['model'] == 'RT-AC56U')) { //RT-AC56U
-	COL_P0N = '0';
-	COL_P1N = '1';
-	COL_P2N = '2';
-	COL_P3N = '3';
-	COL_P4N = '4';
-		break;
-	}
-		if (nvram['boardrev'] == '0x1301') { //Netgear R7000
-	COL_P0N = '4';
-	COL_P1N = '3';
-	COL_P2N = '2';
-	COL_P3N = '1';
-	COL_P4N = '0';
-		break;
-	}
-		if (((nvram['boardrev'] == '0x1100') && (nvram['model'] == 'RT-AC68U')) || (nvram['model'] == 'RT-AC68R'))  { //RT-AC68U or RT-AC68R
-	COL_P0N = '4';
-	COL_P1N = '3';
-	COL_P2N = '2';
-	COL_P3N = '1';
-	COL_P4N = '0';
-		break;
-	}
-	case '0x0467':  // WRT54GL 1.x, WRT54GS 3.x/4.x
-		if (nvram['boardrev'] == '0x13') {  // WHR-G54S
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	}
-	case '0xa4cf':  // Belkin F7D3301
-		if (nvram['boardrev'] == '0x1100') { //Belkin F5D8235-4 v3
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	}
-	case '0xd4cf':  // Belkin F7D4301
-	case '0x048e':  // WL-520GU, WL-500G Premium v2
-	case '0x0550':  // RT-N53 (boardrev = 0x1442), RT-N10U ( boardrev = 0x1102)
-		if (((nvram['boardrev'] == '0x1102') || (nvram['boardrev'] == '0x1100')) || (nvram['boardrev'] == '0x1400')) { //RT-N10U, CW-5358U, L600N
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	}
-    	if ((nvram['boardrev'] == '0x1446') && (nvram['boardnum'] == '0015')) { //Dir-620 C1
-	COL_P0N = '0';
-	COL_P1N = '1';
-	COL_P2N = '2';
-	COL_P3N = '3';
-	COL_P4N = '4';
-		break;
-    	}
-		if (nvram['boardrev'] == '0x1100') { //CW-5358U
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	}
+  case '0x0467':  // WRT54GL 1.x, WRT54GS 3.x/4.x
+    if (nvram['boardrev'] == '0x13') {  // WHR-G54S
+      COL_P0N = '1';
+      COL_P1N = '2';
+      COL_P2N = '3';
+      COL_P3N = '4';
+      COL_P4N = '0';
+      break;
+    }
+  case '0xa4cf':  // Belkin F7D3301
+    if (nvram['boardrev'] == '0x1100'){ //Belkin F5D8235-4 v3
+      COL_P0N = '1';
+      COL_P1N = '2';
+      COL_P2N = '3';
+      COL_P3N = '4';
+      COL_P4N = '0';
+      break;
+    }
+  case '0xd4cf':  // Belkin F7D4301
+  case '0x048e':  // WL-520GU, WL-500G Premium v2
+  case '0x0550':  // RT-N53 (boardrev = 0x1442), RT-N10U ( boardrev = 0x1102)
+    if (((nvram['boardrev'] == '0x1102') || (nvram['boardrev'] == '0x1100')) ||(nvram['boardrev'] == '0x1400')) { //RT-N10U, CW-5358U, L600N
+      COL_P0N = '1';
+      COL_P1N = '2';
+      COL_P2N = '3';
+      COL_P3N = '4';
+      COL_P4N = '0';
+      break;
+    }
+    if ((nvram['boardrev'] == '0x1446') && (nvram['boardnum'] == '0015')) { //Dir-620 C1
+      COL_P0N = '0';
+      COL_P1N = '1';
+      COL_P2N = '2';
+      COL_P3N = '3';
+      COL_P4N = '4';
+      break;
+    }
     COL_P0N = '3';
-	COL_P1N = '2';
-	COL_P2N = '1';
-	COL_P3N = '0';
-	COL_P4N = '4';
-		break;
-	case '0x04ef':  // WRT320N/E2000
-	case '0x04cf':  // WRT610Nv2/E3000, RT-N16, WNR3500L
-	case '0xf5b2':  // RT-N66
-	case '0x052b':  // WNR3500Lv2
-	COL_P0N = '4';
-	COL_P1N = '3';
-	COL_P2N = '2';
-	COL_P3N = '1';
-	COL_P4N = '0';
-		break;
-	case '0x05d8': //Tenda W1800
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	case '0xf53a':  // E1000v2.1/E1200v1
-	case '0xf53b':   // E1000v2/E1500
-		if (((nvram['boot_hw_model'] == 'E1200') && (nvram['boot_hw_ver'] == '1.0')) || (nvram['boot_hw_model'] == 'E1500')) {
-	COL_P0N = '0';
-	COL_P1N = '1';
-	COL_P2N = '2';
-	COL_P3N = '3';
-	COL_P4N = '4';
-		break;
-	}
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	case '0xc550':  // E1550
-	case '0xf550':  // E2500
-	case '0x058e':  // E900, E800
-	case '0xf52a':  // E3200
-	case '0xf52c':  // E4200v1
-	case '0x1202':  // HG320 - not sure, need test
-		if ((nvram['boardrev'] == '0x1153') && (nvram['boardnum'] == '45')) { //RT-N10P
-	COL_P0N = '3';
-	COL_P1N = '2';
-	COL_P2N = '1';
-	COL_P3N = '0';
-	COL_P4N = '4';
-		break;
-	}
-		if (nvram['boardrev'] == '0x1153') { //RG200E-CA type 0x058e same as E900
-	COL_P0N = '4';
-	COL_P1N = '3';
-	COL_P2N = '2';
-	COL_P3N = '1';
-	COL_P4N = '0';
-		break;
-	}
-	COL_P0N = '0';
-	COL_P1N = '1';
-	COL_P2N = '2';
-	COL_P3N = '3';
-	COL_P4N = '4';
-		break;
-	case '0x052b':
-		if (nvram['boardrev'] == '02') { //WNR3500Lv2
-	COL_P0N = '4';
-	COL_P1N = '3';
-	COL_P2N = '2';
-	COL_P3N = '1';
-	COL_P4N = '0';
-		break;
-	}
-		if (nvram['boardrev'] == '0x1204') { //rt-n15u
-	COL_P0N = '3';
-	COL_P1N = '2';
-	COL_P2N = '1';
-	COL_P3N = '0';
-	COL_P4N = '4';
-		break;
-	}
+    COL_P1N = '2';
+    COL_P2N = '1';
+    COL_P3N = '0';
+    COL_P4N = '4';
+    break;
+  case '0x04ef':  // WRT320N/E2000
+  case '0x04cf':  // WRT610Nv2/E3000, RT-N16, WNR3500L
+  case '0xf5b2':  // RT-N66
+    COL_P0N = '4';
+    COL_P1N = '3';
+    COL_P2N = '2';
+    COL_P3N = '1';
+    COL_P4N = '0';
+    break;
+  case '0xf53a':  // E1000v2.1/E1200v1
+  case '0xf53b':   // E1000v2/E1500
+   if (((nvram['boot_hw_model'] == 'E1200') && (nvram['boot_hw_ver'] == '1.0')) || (nvram['boot_hw_model'] == 'E1500')) {
+     COL_P0N = '0';
+     COL_P1N = '1';
+     COL_P2N = '2';
+     COL_P3N = '3';
+     COL_P4N = '4';
+   break;
+   }
+   COL_P0N = '1';
+   COL_P1N = '2';
+   COL_P2N = '3';
+   COL_P3N = '4';
+   COL_P4N = '0';
+   break;
+  case '0xc550':  // E1550
+  case '0xf550':  // E2500
+  case '0x058e':  // E900
+  case '0xf52a':  // E3200
+  case '0xf52c':  // E4200v1
+  case '0x1202':  // HG320 - not sure, need test
+    if ((nvram['boardrev'] == '0x1153') && (nvram['boardnum'] == '45')) { //RT-N10P
+     COL_P0N = '3';
+     COL_P1N = '2';
+     COL_P2N = '1';
+     COL_P3N = '0';
+     COL_P4N = '4';
+     break;
+    }
+    if (nvram['boardrev'] == '0x1153') { //RG200E-CA type 0x058e same as E900
+     COL_P0N = '4';
+     COL_P1N = '3';
+     COL_P2N = '2';
+     COL_P3N = '1';
+     COL_P4N = '0';
+     break;
+    }
+    COL_P0N = '0';
+    COL_P1N = '1';
+    COL_P2N = '2';
+    COL_P3N = '3';
+    COL_P4N = '4';
+    break;
+  case '0x052b':
+   if (nvram['boardrev'] == '02') { //WNR3500Lv2
+    COL_P0N = '4';
+    COL_P1N = '3';
+    COL_P2N = '2';
+    COL_P3N = '1';
+    COL_P4N = '0';
+    break;
+   }
+   if (nvram['boardrev'] == '0x1204') { //rt-n15u
+    COL_P0N = '3';
+    COL_P1N = '2';
+    COL_P2N = '1';
+    COL_P3N = '0';
+    COL_P4N = '4';
+    break;
+   }
 // should work on WRT54G v2/v3, WRT54GS v1/v2 and others
-	default:
-	COL_P0N = '1';
-	COL_P1N = '2';
-	COL_P2N = '3';
-	COL_P3N = '4';
-	COL_P4N = '0';
-		break;
-	}
+  default:
+    COL_P0N = '1';
+    COL_P1N = '2';
+    COL_P2N = '3';
+    COL_P3N = '4';
+    COL_P4N = '0';
+    break;
+}
+
 var COL_VID = 0;
 var COL_MAP = 1;
 var COL_P0  = 2;
@@ -885,8 +838,6 @@ function init() {
 		vlg.resetNewEditor();
 		var c;
 		if (((c = cookie.get('advanced_vlan_notes_vis')) != null) && (c == '1')) toggleVisibility("notes");
-		if (((c = cookie.get('advanced_vlan_wireless_vis')) != null) && (c == '1')) toggleVisibility("wireless");
-		if (((c = cookie.get('advanced_vlan_vidmap_vis')) != null) && (c == '1')) toggleVisibility("vidmap");
 	}
 }
 

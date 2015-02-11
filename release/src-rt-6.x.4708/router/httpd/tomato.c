@@ -23,7 +23,7 @@ char *post_buf = NULL;
 int rboot = 0;
 extern int post;
 
-static void asp_css(int argc, char **argv);
+//static void asp_css(int argc, char **argv);
 static void asp_resmsg(int argc, char **argv);
 
 //
@@ -433,6 +433,7 @@ const aspapi_t aspapi[] = {
 	{ "sabaaiVPN",			asp_sabaaiVPN		},
 	{ "sabaaiMenu",			asp_sabaaiMenu		},
 	{ "sabaaiMSG",			asp_sabai_msg		},
+//	{ "sabaaihash",			asp_sabai_hash		},
 	{ "sabaiversion",		asp_sabai_version	},
 	{ "isitsafe",			asp_isitsafe		},
 	{ "isitsabai",			asp_isitsabai		},
@@ -443,12 +444,12 @@ const aspapi_t aspapi[] = {
 	{ "vpnnetmask",			asp_vpnnetmask		},
 	{ "vpngateway",			asp_vpngateway		},
 
-	{ "css",				asp_css				},
-	{ NULL,					NULL				}
+//	{ "css",				asp_css		},
+	{ NULL,					NULL		}
 };
 
 // -----------------------------------------------------------------------------
-
+/*
 static void asp_css(int argc, char **argv)
 {
 	const char *css = nvram_safe_get("web_css");
@@ -462,7 +463,7 @@ static void asp_css(int argc, char **argv)
 		}
 	}
 }
-
+*/
 // -----------------------------------------------------------------------------
 
 const char *resmsg_get(void)
@@ -1022,7 +1023,7 @@ static const nvset_t nvset_list[] = {
 
 // access restriction
 	{ "rruleN",				V_RANGE(0, 99)		},
-//	{ "rrule##",			V_LENGTH(0, 2048)	},	// in save_variables()
+//	{ "rrule##",			V_LENGTH(0, 16384)	},	// in save_variables()
 
 // admin-access
 	{ "http_enable",		V_01				},
