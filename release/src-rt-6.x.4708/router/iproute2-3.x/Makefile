@@ -42,6 +42,8 @@ IPTABLES_LIBS = $(IPTABLES_DIR)/libxtables/.libs
 export IPTL = -L$(IPTABLES_LIBS)
 export CFLAGS += -I$(IPTABLES_INCLUDE)
 
+.PHONY: all
+
 all: Config
 	@set -e; \
 	for i in $(SUBDIRS); \

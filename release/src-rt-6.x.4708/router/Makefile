@@ -800,21 +800,25 @@ oldconfig oldconf: koldconf roldconf dependconf bboldconf
 # BEGIN SABAI
 
 sabaikoldconf:
+	# [ router ] MK $@
 	@$(MAKE) -C $(LINUXDIR) oldconfig
 	@$(MAKE) -C $(LINUXDIR) include/linux/version.h
 
 sabairoldconf: config/conf
-	@config/conf -o $(CONFIG_IN)
+	# [ router ] MK $@
+	@config/conf -o $(CONFIG_IN) > roldconf.sabai.log
 	@$(MAKE) shared-clean rc-clean nvram-clean httpd-clean prebuilt-clean libbcmcrypto-clean dhcpv6-clean
-	#@$(MAKE) shared rc nvram httpd prebuilt libbcmcrypto dhcpv6
+#	@$(MAKE) shared rc nvram httpd prebuilt libbcmcrypto dhcpv6
 
 .sabaiipv6-y .sabaiipv6-n:
+	# [ router ] MK $@
 	@rm -f .ipv6-y .ipv6-n
 	@$(MAKE) iptables-clean ebtables-clean pppd-clean zebra-clean dnsmasq-clean iproute2-clean
 	#@$(MAKE) iptables ebtables pppd zebra dnsmasq iproute2
 	@touch $@
 
 .sabaifullssl-y .sabaifullssl-n:
+	# [ router ] MK $@
 	@rm -f .fullssl-y .fullssl-n
 	@$(MAKE) openssl-clean vsftpd-clean mssl-clean mdu-clean httpd-clean
 	#@$(MAKE) openssl vsftpd mssl mdu httpd
@@ -823,6 +827,7 @@ sabairoldconf: config/conf
 sabaidependconf: .ipv6-$(if $(TCONFIG_IPV6),y,n) .fullssl-$(if $(FULL_OPENSSL),y,n)
 
 sabaibboldconf:
+	# [ router ] MK $@
 	@$(MAKE) -C busybox oldconfig
 
 sabaioldconfig: sabaikoldconf sabairoldconf sabaidependconf sabaibboldconf
@@ -835,6 +840,8 @@ sabaioldconfig: sabaikoldconf sabairoldconf sabaidependconf sabaibboldconf
 
 busybox: dummy
 	@$(MAKE) -C busybox EXTRA_CFLAGS="-fPIC $(EXTRACFLAGS)"
+
+# V=1
 
 busybox-install:
 	rm -rf $(INSTALLDIR)/busybox
@@ -959,7 +966,7 @@ bridge-install:
 
 dnsmasq: $(if $(TCONFIG_DNSSEC),nettle,)
 	@$(SEP)
-	@$(MAKE) -C dnsmasq $(PARALLEL_BUILD) \
+	@$(MAKE) -C dnsmasq \
 	COPTS="$(if $(TCONFIG_DNSSEC),-I$(TOP)/nettle/include -I$(TOP)/gmp -DHAVE_DNSSEC -DHAVE_DNSSEC_STATIC,) \
 		$(if $(TCONFIG_IPV6),-DUSE_IPV6,-DNO_IPV6) \
 		$(if $(CONFIG_LINUX26),-DUSE_IPSET,-DNO_IPSET) \
@@ -2626,4 +2633,4 @@ $(obj-y) $(obj-n) $(obj-clean) $(obj-install): dummy
 
 .PHONY: all clean distclean mrproper install package image
 .PHONY: conf mconf oldconf kconf kmconf config menuconfig oldconfig
-.PHONY: dummy libnet libpcap
+.PHONY: dummy libnet

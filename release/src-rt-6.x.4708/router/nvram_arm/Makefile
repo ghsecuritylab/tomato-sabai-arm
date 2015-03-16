@@ -42,16 +42,18 @@ vpath %.c $(SRCBASE)/shared/nvram
 all: libnvram.so nvram
 
 install: all
-	install -D libnvram.so $(INSTALLDIR)/usr/lib/libnvram.so
-	$(STRIP) $(INSTALLDIR)/usr/lib/libnvram.so
-	install -D nvram $(INSTALLDIR)/bin/nvram
-	$(STRIP) $(INSTALLDIR)/bin/nvram
+	@install -D libnvram.so $(INSTALLDIR)/usr/lib/libnvram.so
+	@$(STRIP) $(INSTALLDIR)/usr/lib/libnvram.so
+	@install -D nvram $(INSTALLDIR)/bin/nvram
+	@$(STRIP) $(INSTALLDIR)/bin/nvram
 
 clean:
-	rm -f *.o *.a *.so nvram
+	@rm -f *.o *.a *.so nvram
 
 libnvram.so: nvram_linux.o
-	$(LD) -shared -o $@ $^
+	# [ nvram ] CC $@"
+	@$(LD) -shared -o $@ $^
 
 nvram: main.o libnvram.so
-	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) -lnvram
+	# [ nvram ] CC $@"
+	@$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) -lnvram

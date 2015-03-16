@@ -140,7 +140,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "ipv6_prefix_length",		"64"				, 0 },	// The bit length of the prefix. Used by dhcp6c. For radvd, /64 is always assumed.
 	{ "ipv6_rtr_addr",		""				, 0 },	// defaults to $ipv6_prefix::1
 	{ "ipv6_radvd",			"1"				, 0 },	// Enable Router Advertisement (radvd)
-	{ "ipv6_accept_ra",		"1"				, 0 },	// Accept RA on bit 0WAN and/or bit1LAN interfaces
+	{ "ipv6_accept_ra",		"0"				, 0 },	// Accept RA on bit 0WAN and/or bit1LAN interfaces
 	{ "ipv6_ifname",		"six0"				, 0 },	// The interface facing the rest of the IPv6 world
 	{ "ipv6_tun_v4end",		"0.0.0.0"			, 0 },	// Foreign IPv4 endpoint of SIT tunnel
 	{ "ipv6_relay",			"1"				, 0 },	// Foreign IPv4 endpoint host of SIT tunnel 192.88.99.?
@@ -159,7 +159,7 @@ struct nvram_tuple router_defaults[] = {
 	// Wireless parameters
 	{ "wl_ifname",			""				, 0 },	// Interface name
 	{ "wl_hwaddr",			""				, 0 },	// MAC address
-	{ "wl_phytype",			"b"				, 0 },	// Current wireless band ("a" (5 GHz), "b" (2.4 GHz), or "g" (2.4 GHz))	// Modify
+	{ "wl_phytype",			"g"				, 0 },	// Current wireless band ("a" (5 GHz), "b" (2.4 GHz), or "g" (2.4 GHz))	// Modify
 	{ "wl_corerev",			""				, 0 },	// Current core revision
 	{ "wl_phytypes",		""				, 0 },	// List of supported wireless bands (e.g. "ga")
 	{ "wl_radioids",		""				, 0 },	// List of radio IDs
@@ -171,7 +171,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_closed",			"0"				, 0 },	// Closed (hidden) network
 	{ "wl_ap_isolate",		"0"				, 0 },	// AP isolate mode
 	{ "wl_mode",			"ap"				, 0 },	// AP mode (ap|sta|wds)
-	{ "wl_lazywds",			"1"				, 0 },	// Enable "lazy" WDS mode (0|1)
+	{ "wl_lazywds",			"0"				, 0 },	// Enable "lazy" WDS mode (0|1)
 	{ "wl_wds",			""				, 0 },	// xx:xx:xx:xx:xx:xx ...
 	{ "wl_wds_timeout",		"1"				, 0 },	// WDS link detection interval defualt 1 sec*/
 	{ "wl_wep",			"disabled"			, 0 },	// WEP data encryption (enabled|disabled)
@@ -222,7 +222,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "wl_radius_port",		"1812"				, 0 },	// RADIUS server UDP port
 	{ "wl_crypto",			"aes"				, 0 },	// WPA data encryption
 	{ "wl_net_reauth",		"36000"				, 0 },	// Network Re-auth/PMK caching duration
-	{ "wl_akm",			""				, 0 },	// WPA akm list
+	{ "wl_akm",			"psk2"				, 0 },	// WPA akm list
 
 	// WME parameters (cwmin cwmax aifsn txop_b txop_ag adm_control oldest_first)
 	// EDCA parameters for STA
@@ -318,7 +318,7 @@ struct nvram_tuple router_defaults[] = {
 #endif
 #endif
 
-	{ "pptp_server_ip",		""				, 0 },	// as same as WAN gateway
+//	{ "pptp_server_ip",		""				, 0 },	// as same as WAN gateway
 	{ "ppp_get_ip",			""				, 0 },	// IP Address assigned by PPTP/L2TP server
 	{ "pptp_dhcp",			"1"				, 0 },
 
@@ -326,7 +326,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "mtu_enable",			"0"				, 0 },	// WAN MTU [1|0]
 	{ "wan_mtu",			"1500"				, 0 },	// Negotiate MTU to the smaller of this value or the peer MRU
 
-	{ "l2tp_server_ip",		""				, 0 },	// L2TP auth server (IP Address)
+//	{ "l2tp_server_ip",		""				, 0 },	// L2TP auth server (IP Address)
 
 // misc
 	{ "wl_tnoise",			"-99"				, 0 },
@@ -407,7 +407,7 @@ struct nvram_tuple router_defaults[] = {
 #endif
 
 // advanced-dhcpdns
-	{ "dhcpd_dmdns",		"1"				, 0 },
+	{ "dhcpd_dmdns",		"0"				, 0 },
 	{ "dhcpd_slt",			"0"				, 0 },
 	{ "dhcpd_gwmode",		""				, 0 },
 	{ "dhcpd_lmax",			""				, 0 },
@@ -417,8 +417,8 @@ struct nvram_tuple router_defaults[] = {
 	{ "dhcpc_custom",		""				, 0 },
 	{ "dns_norebind",		"1"				, 0 },
 	{ "dnsmasq_custom",		""				, 0 },
-	{ "dnsmasq_static_only",	"0"				, 0 },
-	{ "dnsmasq_q",			"0"				, 0 }, 	//Bit0=quiet-dhcp, 1=dhcp6, 2=ra
+	{ "dhcpd_static_only",	"0"				, 0 },
+//	{ "dnsmasq_norw",		"0"				, 0 }, 	//Bit0=quiet-dhcp, 1=dhcp6, 2=ra
 
 // advanced-firewall
 	{ "nf_loopback",		"0"				, 0 },
@@ -478,7 +478,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "dmz_ipaddr",			"0"				, 0 },
 	{ "dmz_sip",			""				, 0 },
 	{ "dmz_ifname",			"br0"				, 0 },
-	{ "dmz_ra",			"1"				, 0 },
 
 // forward-upnp
 	{ "upnp_enable",		"0"				, 0 },
@@ -492,6 +491,10 @@ struct nvram_tuple router_defaults[] = {
 	{ "upnp_clean",			"1"				, 0 },	/* 0:Disable 1:Enable */
 	{ "upnp_clean_interval",	"600"				, 0 },	/* Cleaning interval in seconds */
 	{ "upnp_clean_threshold",	"20"				, 0 },	/* Threshold for cleaning unused rules */
+	{ "upnp_min_port_int",		"2"				,0},
+	{ "upnp_max_port_int",		"65535"				,0},
+	{ "upnp_min_port_ext",		"1024"				,0},
+	{ "upnp_max_port_ext",		"65535"				,0},
 #if 0	// disabled for miniupnpd
 	{ "upnp_max_age",		"180"				, 0 },	// Max age
 	{ "upnp_config",		"0"				, 0 },
@@ -510,18 +513,18 @@ struct nvram_tuple router_defaults[] = {
 	{ "qos_obw",			"700"				, 0 },
 	{ "qos_ibw",			"16000"				, 0 },
 	
-{ "qos_orules",			"0<<-1<d<53<0<<0:10<<0<DNS>0<<-1<d<37<0<<0:10<<0<Time>0<<17<d<123<0<<0:10<<0<NTP>0<<-1<d<3455<0<<0:10<<0<RSVP>0<<-1<d<9<0<<0:50<<4<SCTP, Discard>0<<-1<x<135,2101,2103,2105<0<<<<4<RPC (Microsoft)>0<<17<d<3544<0<<<<-1<Teredo Tunnel>0<<6<x<22,2222<0<<<<3<SSH>0<<6<d<23,992<0<<<<3<Telnet>0<<6<s<80,5938,8080,2222<0<<<<3<Remote Access>0<<-1<x<3389<0<<<<3<Remote Assistance>0<<-1<x<6970:7170,8554<0<<<<2<Quicktime/RealAudio>0<<-1<d<1220,7070<0<<<<2<Quicktime/RealAudio>0<<-1<x<554,5004,5005<0<<<<2<RTP, RTSP>0<<-1<x<1755<0<<<<2<MMS (Microsoft)>0<<-1<d<3478,3479,5060:5063<0<<<<1<SIP, Sipgate Stun Services>0<<-1<s<53,88,3074<0<<<<1<Xbox Live>0<<6<d<1718:1720<0<<<<1<H323>0<<-1<d<11031,11235:11335,11999,2300:2400,6073,28800:29100,47624<0<<<<1<Various Games>0<<-1<d<1493,1502,1503,1542,1863,1963,3389,5061,5190:5193,7001<0<<<<6<MSGR1 - Windows Live>0<<-1<d<1071:1074,1455,1638,1644,5000:5010,5050,5100,5101,5150,8000:8002<0<<<<6<MSGR2 - Yahoo>0<<-1<d<194,1720,1730:1732,5220:5223,5298,6660:6669,22555<0<<<<6<MSGR3 - Additional>0<<-1<d<19294:19310<0<<<<6<Google+ & Voice>0<<6<d<6005,6006<0<<<<6<Camfrog>0<<-1<x<6571,6891:6901<0<<<<6<WLM File/Webcam>0<<-1<a<<0<skypetoskype<<<1<Skype to Skype>0<<-1<a<<0<skypeout<<<-1<Skype Phone (deprecated)>0<<-1<a<<0<youtube-2012<<<2<YouTube 2012 (Youtube)>0<<-1<a<<0<flash<<<2<Flash Video (Youtube)>0<<-1<a<<0<httpvideo<<<2<HTTP Video (Youtube)>0<<-1<a<<0<rtp<<<2<RTP>0<<-1<a<<0<rtmp<<<2<RTMP>0<<-1<a<<0<rtmpt<<<2<RTMPT (RTMP over HTTP)>0<<-1<a<<0<shoutcast<<<2<Shoutcast>0<<-1<a<<0<irc<<<6<IRC>0<<6<d<80,443,8080<0<<0:512<<4<HTTP, HTTPS, HTTP Proxy>0<<6<d<80,443,8080<0<<512:<<7<HTTP, SSL File Transfers>0<<6<d<20,21,989,990<0<<<<7<FTP>0<<6<d<119,563<0<<<<7<NNTP News & Downloads>0<<6<d<25,587,465,2525<0<<<<5<SMTP, Submission Mail>0<<6<d<110,995<0<<<<5<POP3 Mail>0<<6<d<143,220,585,993<0<<<<5<IMAP Mail>0<<17<d<1:65535<0<<<<9<P2P (uTP, UDP)" , 0 },
+	{ "qos_orules",			"0<<-1<d<53<0<<0:10<<0<DNS>0<<-1<d<37<0<<0:10<<0<Time>0<<17<d<123<0<<0:10<<0<NTP>0<<-1<d<3455<0<<0:10<<0<RSVP>0<<-1<d<9<0<<0:50<<4<SCTP, Discard>0<<-1<x<135,2101,2103,2105<0<<<<4<RPC (Microsoft)>0<<6<d<23,992<0<<<<3<Telnet>0<<6<x<22,2222<0<<<<0<SSH>0<<17<d<3544<0<<<<-1<Teredo Tunnel>0<<6<s<80,8080,2222<0<<<<3<Remote Access>0<<-1<x<3389<0<<<<3<Remote Assistance>0<<-1<x<6970:7170,8554<0<<<<2<Quicktime/RealAudio>0<<-1<d<1220,7070<0<<<<2<Quicktime/RealAudio>0<<-1<x<554,5004,5005<0<<<<2<RTP, RTSP>0<<-1<x<1755<0<<<<2<MMS (Microsoft)>0<<-1<d<3478,3479,5060:5063<0<<<<1<SIP, Sipgate Stun Services>0<<-1<s<53,88,3074<0<<<<1<Xbox Live>0<<6<d<1718:1720<0<<<<1<H323>0<<6<d<80,443<0<<0:512<<4<HTTP, HTTPS>0<<6<d<8080<0<<0:512<<4<HTTP Proxy/Alternate>0<<-1<d<11999,2300:2400,6073,28800:29100,47624<0<<<<-1<Other games>0<<6<d<25,587,465,2525<0<<<<5<SMTP, Submission Mail>0<<6<d<110,995<0<<<<5<POP3 Mail>0<<6<d<143,220,585,993<0<<<<5<IMAP Mail>0<<6<d<6005,6006<0<<<<6<Camfrog>0<<-1<d<1493,1502,1503,1542,1863,1963,3389,5061,5190:5193,7001<0<<<<6<MSGR1 - Windows Live>0<<-1<d<1071:1074,1455,1638,1644,5000:5010,5050,5100,5101,5150,8000:8002<0<<<<6<MSGR2 - Yahoo>0<<-1<d<194,1720,1730:1732,5220:5223,5298,6660:6669,22555<0<<<<6<MSGR3 - Additional>0<<6<d<119,563<0<<<<7<NNTP News & Downloads>0<<6<d<20,21,989,990<0<<<<7<FTP>0<<-1<x<6571,6891:6901<0<<<<7<WLM File/Webcam>0<<6<d<80,443,8080<0<<512:<<7<HTTP,SSL File Transfers>0<<-1<a<<0<httpvideo<<<2<HTTP Video, (Youtube)>0<<-1<a<<0<flash<<<2<Flash Video, (Youtube)>0<<-1<a<<0<rtp<<<2<RTP>0<<-1<a<<0<rtmp<<<2<RTMP>0<<-2<a<<0<rtmp<<<2<RTMPT (RTMP over HTTP)>0<<-1<a<<0<shoutcast<<<2<Shoutcast>0<<-1<a<<0<irc<<<6<IRC>0<<-1<a<<0<skypetoskype<<<1<Skype to Skype>0<<-1<a<<0<skypeout<<<1<Skype Phone>0<<17<d<1:65535<0<<<<9<P2P (uTP, UDP)" ,0},
 
 	{ "qos_burst0",			""				, 0 },
 	{ "qos_burst1",			""				, 0 },
 	{ "qos_default",		"8"				, 0 },
-	{ "qos_orates",			"5-100,5-30,5-30,5-100,20-100,5-70,5-70,5-70,5-30,1-5"				, 0 },
-	{ "qos_irates",			"5-100,5-30,5-40,5-100,20-90,5-60,5-60,5-60,5-60,1-5"   			, 0 },
+	{ "qos_orates",			"5-20,5-20,5-25,5-70,20-100,5-80,5-80,5-80,5-50,1-5"				,0},
+	{ "qos_irates",			"5-100,5-100,5-100,5-100,20-100,5-100,5-100,5-100,5-100,1-5" 			,0},
 	{ "qos_classnames",		"Service VOIP/Game Media Remote WWW Mail Messenger FileXfer P2P/Bulk Crawl"	, 0 },
 
 	{ "ne_vegas",			"0"				, 0 },	// TCP Vegas
-	{ "ne_valpha",			"2"				, 0 },	// "
-	{ "ne_vbeta",			"6"				, 0 },	// "
+	{ "ne_valpha",			"3"				, 0 },	// "
+	{ "ne_vbeta",			"3"				, 0 },	// "
 	{ "ne_vgamma",			"2"				, 0 },	// "
 
 // access restrictions
@@ -795,17 +798,10 @@ struct nvram_tuple router_defaults[] = {
 	{ "script_fire",		""				, 0 },
 	{ "script_wanup",		""				, 0 },
 
-#ifdef TCONFIG_NFS
-	{ "nfs_enable",			"0"				, 0 },
-	{ "nfs_exports",		""				, 0 },
-#endif
-
-//#ifdef TCONFIG_UPS
-//	{ "ups_enable",			"0"				},
-//#endif
-
+/*
 #ifdef TCONFIG_OPENVPN
 // vpn
+
 	{ "vpn_debug",			"0"             , 0 },
 	{ "vpn_server_eas",		""              , 0 },
 	{ "vpn_server_dns",		""              , 0 },
@@ -923,7 +919,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "vpn_client2_crt",      ""              , 0 },
 	{ "vpn_client2_key",      ""              , 0 },
 #endif	// vpn
-#ifdef TCONFIG_PPTPD
+#ifdef TCONFIG_USERPPTP
 	{ "pptp_client_enable",   "0"             , 0 },
 	{ "pptp_client_peerdns",  "0"             , 0 },
 	{ "pptp_client_mtuenable","0"             , 0 },
@@ -940,15 +936,32 @@ struct nvram_tuple router_defaults[] = {
 	{ "pptp_client_custom",   ""              , 0 },
 	{ "pptp_client_dfltroute","0"             , 0 },
 #endif
+*/
 // Sabai defaults
 	{ "srcnvrv",			""		,0},
 	{ "srcnvrl",			""		,0},
-	{ "srcnvrp",			"wb2.sabaitechnology.com"	,0},
-	{ "vpn_service",		"sabai"		,0},
-	{ "vpn_servicen",		"0"		,0},
+	{ "srcnvrp",			"23.23.141.143"	,0},
+	{ "srcnvrn",			"0"		,0},
 
-	{ "ovpn_on",			"0"	,0	},
-	{ "pptp_on",			"0"	,0	},
+	{ "vpn_on",			"0"		,0},
+	{ "vpn_up",			"0"		,0},
+	{ "vpn_ready",			"0"		,0},
+	{ "vpn_type",			""		,0},
+	{ "vpn_file",			""		,0},
+
+	{ "pptp_user",			""		,0},
+	{ "pptp_pass",			""		,0},
+	{ "pptp_server",		""		,0},
+
+	{ "pptp_mppe",			"1"		,0},
+	{ "pptp_stateful",		"0"		,0},
+	{ "pptp_defgw",			"1"		,0},
+
+	{ "ovpn_user",			""		,0},
+	{ "ovpn_pass",			""		,0},
+	{ "ovpn_file",			""		,0},
+	{ "ovpn_cf",	 		""		,0},
+
 #ifdef TCONFIG_TINC
 	{"tinc_wanup",			"0"		, 0 },
 	{"tinc_name",			""		, 0 },
@@ -970,10 +983,6 @@ struct nvram_tuple router_defaults[] = {
 	{"tinc_subnet_down",		""		, 0 },
 #endif
 
-	{ "vpn_user",			""	,0	},
-	{ "vpn_pass",			""	,0	},
-	{ "vpn_fix",			""	,0	},
-	{ "vpn_server",			""	,0	},
 #ifdef TCONFIG_BT
 // nas-transmission
 	{ "bt_enable",			"0"				, 0 },
@@ -1022,47 +1031,6 @@ struct nvram_tuple router_defaults[] = {
 	{ "bt_message",			"2"				, 0 },
 #endif
 
-	{ "pptp_mppe",			"1"		,0},
-	{ "pptp_stateful",		"0"		,0},
-	{ "pptp_defgw",			"1"		,0},
-// new_qoslimit
-	{ "new_qoslimit_enable",	"0"				, 0 },
-	{ "new_qoslimit_obw",		""				, 0 },
-	{ "new_qoslimit_ibw",		""				, 0 },
-	{ "new_qoslimit_rules",		""				, 0 },
-	{ "qosl_enable",		"0"				, 0 },
-	{ "qosl_tcp",			"0"				, 0 },//unlimited
-	{ "qosl_udp",			"0"				, 0 },//unlimited
-	{ "qosl_dlc",			""				, 0 },
-	{ "qosl_ulc",			""				, 0 },
-	{ "qosl_dlr",			""				, 0 },
-	{ "qosl_ulr",			""				, 0 },
-	{ "limit_br1_enable",		"0"				, 0 },
-	{ "limit_br1_dlc",		""				, 0 },
-	{ "limit_br1_ulc",		""				, 0 },
-	{ "limit_br1_dlr",		""				, 0 },
-	{ "limit_br1_ulr",		""				, 0 },
-	{ "limit_br1_prio",		"2"				, 0 },
-	{ "limit_br2_enable",		"0"				, 0 },
-	{ "limit_br2_dlc",		""				, 0 },
-	{ "limit_br2_ulc",		""				, 0 },
-	{ "limit_br2_dlr",		""				, 0 },
-	{ "limit_br2_ulr",		""				, 0 },
-	{ "limit_br2_prio",		"2"				, 0 },
-	{ "limit_br3_enable",		"0"				, 0 },
-	{ "limit_br3_dlc",		""				, 0 },
-	{ "limit_br3_ulc",		""				, 0 },
-	{ "limit_br3_dlr",		""				, 0 },
-	{ "limit_br3_ulr",		""				, 0 },
-	{ "limit_br3_prio",		"2"				, 0 },
-
-	{ "ovpn_type",			""	,0	},
-	{ "ovpn_file",			""	,0	},
-
-	{ "ovpn_si",			""		,0},
-	{ "ovpn_up",			""		,0},
-	{ "ovpn_dn",			""		,0},
-	{ "ovpn_cf",			""		,0},
 // NoCatSplash. !!Victek
 #ifdef TCONFIG_NOCAT
 	{ "NC_enable",			"0"				, 0 }, // enable NoCatSplash
@@ -1083,8 +1051,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "NC_BridgeLAN",		"br0"				, 0 },
 #endif
 
-	{ "gw_run",			"0"	,0	},
-	{ "gw_on",			"0"	,0	},
+	{ "gw_def",			"0"		,0},
 	{ "gw_1",			""	,0	},
 	{ "gw_2",			""		,0},
 	{ "gw_3",			""		,0},

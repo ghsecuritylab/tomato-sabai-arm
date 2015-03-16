@@ -126,8 +126,8 @@ ppc64-mont.s:	asm/ppc64-mont.pl;$(PERL) asm/ppc64-mont.pl $(PERLASM_SCHEME) $@
 
 alpha-mont.s:	asm/alpha-mont.pl
 	(preproc=/tmp/$$$$.$@; trap "rm $$preproc" INT; \
-	$(PERL) asm/alpha-mont.pl > $$preproc && \
-	$(CC) -E $$preproc > $@ && rm $$preproc)
+	@$(PERL) asm/alpha-mont.pl > $$preproc && \
+	@$(CC) -E $$preproc > $@ && rm $$preproc)
 
 # GNU make "catch all"
 %-mont.s:	asm/%-mont.pl;	$(PERL) $< $(PERLASM_SCHEME) $@

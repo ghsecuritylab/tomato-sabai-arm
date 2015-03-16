@@ -192,25 +192,25 @@ depend:	config.h
 	testgetroute.c testportinuse.c testasyncsendto.c
 
 miniupnpd: config.h $(ALLOBJS)
-	$(CC) $(CFLAGS) -o $@ $(ALLOBJS) $(LIBS)
+	@$(CC) $(CFLAGS) -o $@ $(ALLOBJS) $(LIBS)
 
 # BSDmake :
-#	$(CC) $(CFLAGS) -o $@ $> $(LIBS)
+#	@$(CC) $(CFLAGS) -o $@ $> $(LIBS)
 
 miniupnpdctl:	config.h $(MINIUPNPDCTLOBJS)
-	$(CC) $(CFLAGS) -o $@ $(MINIUPNPDCTLOBJS)
+	@$(CC) $(CFLAGS) -o $@ $(MINIUPNPDCTLOBJS)
 
 testupnpdescgen:	config.h $(TESTUPNPDESCGENOBJS)
-	$(CC) $(CFLAGS) -o $@ $(TESTUPNPDESCGENOBJS) $(LIBS)
+	@$(CC) $(CFLAGS) -o $@ $(TESTUPNPDESCGENOBJS) $(LIBS)
 
 testgetifstats:	config.h $(TESTGETIFSTATSOBJS)
-	$(CC) $(CFLAGS) -o $@ $(TESTGETIFSTATSOBJS) $(LIBS)
+	@$(CC) $(CFLAGS) -o $@ $(TESTGETIFSTATSOBJS) $(LIBS)
 
 testgetifaddr:	config.h $(TESTGETIFADDROBJS)
-	$(CC) $(CFLAGS) -o $@ $(TESTGETIFADDROBJS) $(LIBS)
+	@$(CC) $(CFLAGS) -o $@ $(TESTGETIFADDROBJS) $(LIBS)
 
 testupnppermissions:	config.h $(TESTUPNPPERMISSIONSOBJS)
-	$(CC) $(CFLAGS) -o $@ $(TESTUPNPPERMISSIONSOBJS) $(LIBS)
+	@$(CC) $(CFLAGS) -o $@ $(TESTUPNPPERMISSIONSOBJS) $(LIBS)
 
 testgetroute:	config.h $(TESTGETROUTEOBJS)
 	$(CC) $(CFLAGS) -o $@ $(TESTGETROUTEOBJS) $(LIBS)
@@ -222,16 +222,16 @@ testportinuse:	config.h $(TESTPORTINUSEOBJS)
 	$(CC) $(CFLAGS) -o $@ $(TESTPORTINUSEOBJS) $(LIBS)
 
 # gmake :
-#	$(CC) $(CFLAGS) -o $@ $^
+#	@$(CC) $(CFLAGS) -o $@ $^
 # BSDmake :
-#	$(CC) $(CFLAGS) -o $@ $>
+#	@$(CC) $(CFLAGS) -o $@ $>
 
 config.h:	genconfig.sh VERSION
 	./genconfig.sh $(CONFIG_OPTIONS)
 
 .SUFFIXES:	.o .c
 .c.o:
-	$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
 #	$(CC) $(CFLAGS) -c -o $(.TARGET) $(.IMPSRC)
 

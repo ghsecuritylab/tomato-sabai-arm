@@ -12,6 +12,8 @@ LIBS += -lpthread
 endif
 OBJ = mssl.o
 
+.PHONY: all
+
 all: libmssl.so libmssl.a
 
 libmssl.so: $(OBJ)

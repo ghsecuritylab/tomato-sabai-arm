@@ -5,14 +5,11 @@ EXTRAVERSION = .4
 NAME = Flesh-Eating Bats with Fangs
 
 # *DOCUMENTATION*
-# To see a list of typical targets execute "make help"
-# More info can be located in ./README
-# Comments in this file are targeted only to the developer, do not
-# expect to learn how to build the kernel reading this file.
+# To see a list of typical targets execute "make help"; More info can be located in ./README
+# Comments in this file are targeted only to the developer, do not expect to learn how to build the kernel reading this file.
 
 # Do not:
-# o  use make's built-in rules and variables
-#    (this increases performance and avoids hard-to-debug behaviour);
+# o  use make's built-in rules and variables (this increases performance and avoid hard-to-debug behavour);
 # o  print "Entering directory ...";
 MAKEFLAGS += -rR --no-print-directory
 
@@ -22,24 +19,17 @@ LC_COLLATE=C
 LC_NUMERIC=C
 export LC_COLLATE LC_NUMERIC
 
-# We are using a recursive build, so we need to do a little thinking
-# to get the ordering right.
+# We are using a recursive build, so we need to do a little thinking to get the ordering right.
 #
-# Most importantly: sub-Makefiles should only ever modify files in
-# their own directory. If in some directory we have a dependency on
-# a file in another dir (which doesn't happen often, but it's often
-# unavoidable when linking the built-in.o targets which finally
-# turn into vmlinux), we will call a sub make in that other dir, and
-# after that we are sure that everything which is in that other dir
+# Most importantly: sub-Makefiles should only ever modify files in their own directory. If in some directory we have a dependency on
+# a file in another dir (which doesn't happen often, but it's often unavoidable when linking the built-in.o targets which finally
+# turn into vmlinux), we will call a sub make in that other dir, and after that we are sure that everything which is in that other dir
 # is now up to date.
 #
-# The only cases where we need to modify files which have global
-# effects are thus separated out and done before the recursive
-# descending is started. They are now explicitly listed as the
-# prepare rule.
+# The only cases where we need to modify files which have global effects are thus separated out and done before the recursive
+# descending is started. They are now explicitly listed as the prepare rule.
 
-# To put more focus on warnings, be less verbose as default
-# Use 'make V=1' to see the full commands
+# To put more focus on warnings, be less verbose as default; Use 'make V=1' to see the full commands
 
 ifeq ("$(origin V)", "command line")
   KBUILD_VERBOSE = $(V)
@@ -48,15 +38,11 @@ ifndef KBUILD_VERBOSE
   KBUILD_VERBOSE = 0
 endif
 
-# Call a source code checker (by default, "sparse") as part of the
-# C compilation.
+# Call a source code checker (by default, "sparse") as part of the C compilation.
 #
 # Use 'make C=1' to enable checking of only re-compiled files.
-# Use 'make C=2' to enable checking of *all* source files, regardless
-# of whether they are re-compiled or not.
-#
-# See the file "Documentation/sparse.txt" for more details, including
-# where to get the "sparse" utility.
+# Use 'make C=2' to enable checking of *all* source files, regardless of whether they are re-compiled or not.
+# See the file "Documentation/sparse.txt" for more details, including where to get the "sparse" utility.
 
 ifeq ("$(origin C)", "command line")
   KBUILD_CHECKSRC = $(C)
@@ -110,8 +96,7 @@ _all:
 $(CURDIR)/Makefile Makefile: ;
 
 ifneq ($(KBUILD_OUTPUT),)
-# Invoke a second make in the output directory, passing relevant variables
-# check that the output directory actually exists
+# Invoke a second make in the output directory, passing relevant variables check that the output directory actually exists
 saved-output := $(KBUILD_OUTPUT)
 KBUILD_OUTPUT := $(shell cd $(KBUILD_OUTPUT) && /bin/pwd)
 $(if $(KBUILD_OUTPUT),, \
@@ -265,8 +250,7 @@ export KBUILD_CHECKSRC KBUILD_SRC KBUILD_EXTMOD
 # Beautify output
 # ---------------------------------------------------------------------------
 #
-# Normally, we echo the whole command before executing it. By making
-# that echo $($(quiet)$(cmd)), we now have the possibility to set
+# Normally, we echo the whole command before executing it. By making that echo $($(quiet)$(cmd)), we now have the possibility to set
 # $(quiet) to choose other forms of output instead, e.g.
 #
 #         quiet_cmd_cc_o_c = Compiling $(RELDIR)/$@
@@ -274,11 +258,9 @@ export KBUILD_CHECKSRC KBUILD_SRC KBUILD_EXTMOD
 #
 # If $(quiet) is empty, the whole command will be printed.
 # If it is set to "quiet_", only the short version will be printed. 
-# If it is set to "silent_", nothing will be printed at all, since
-# the variable $(silent_cmd_cc_o_c) doesn't exist.
+# If it is set to "silent_", nothing will be printed at all, since the variable $(silent_cmd_cc_o_c) doesn't exist.
 #
-# A simple variant is to prefix commands with $(Q) - that's useful
-# for commands that shall be hidden in non-verbose mode.
+# A simple variant is to prefix commands with $(Q) - that's useful for commands that shall be hidden in non-verbose mode.
 #
 #	$(Q)ln $@ :<
 #
@@ -293,8 +275,7 @@ else
   Q = @
 endif
 
-# If the user is running make -s (silent mode), suppress echoing of
-# commands
+# If the user is running make -s (silent mode), suppress echoing of commands
 
 ifneq ($(findstring s,$(MAKEFLAGS)),)
   quiet=silent_
@@ -388,9 +369,7 @@ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
 export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_LDFLAGS_MODULE
 export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
 
-# When compiling out-of-tree modules, put MODVERDIR in the module
-# tree rather than in the kernel tree. The kernel tree might
-# even be read-only.
+# When compiling out-of-tree modules, put MODVERDIR in the module tree rather than in the kernel tree. The kernel tree might even be read-only.
 export MODVERDIR := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/).tmp_versions
 
 # Files to ignore in find ... statements
@@ -411,9 +390,7 @@ scripts_basic:
 scripts/basic/%: scripts_basic ;
 
 PHONY += outputmakefile
-# outputmakefile generates a Makefile in the output directory, if using a
-# separate output directory. This allows convenient use of make in the
-# output directory.
+# outputmakefile generates a Makefile in the output directory, if using a separate output directory. This allows convenient use of make in the output directory.
 outputmakefile:
 ifneq ($(KBUILD_SRC),)
 	$(Q)ln -fsn $(srctree) source
@@ -464,27 +441,26 @@ ifeq ($(mixed-targets),1)
 else
 ifeq ($(config-targets),1)
 # ===========================================================================
-# *config targets only - make sure prerequisites are updated, and descend
-# in scripts/kconfig to make the *config target
+# *config targets only - make sure prerequisites are updated, and descend in scripts/kconfig to make the *config target
 
 # Read arch specific Makefile to set KBUILD_DEFCONFIG as needed.
-# KBUILD_DEFCONFIG may point out an alternative default configuration
-# used for 'make defconfig'
+# KBUILD_DEFCONFIG may point out an alternative default configuration used for 'make defconfig'
 include $(srctree)/arch/$(SRCARCH)/Makefile
 export KBUILD_DEFCONFIG KBUILD_KCONFIG
 
 config: scripts_basic outputmakefile FORCE
+	# [ linux ] MK $@
 	$(Q)mkdir -p include/linux include/config
-	$(Q)$(MAKE) $(build)=scripts/kconfig $@
+	$(Q)$(MAKE) $(build)=scripts/kconfig $@ > kconfig.sabai.1.log
 
 %config: scripts_basic outputmakefile FORCE
+	# [ linux ] MK $@ - 2
 	$(Q)mkdir -p include/linux include/config
-	$(Q)$(MAKE) $(build)=scripts/kconfig $@
+	$(Q)$(MAKE) $(build)=scripts/kconfig $@ > kconfig.sabai.2.log
 
 else
 # ===========================================================================
-# Build targets only - this includes vmlinux, arch specific targets, clean
-# targets and others. In general all targets except *config targets.
+# Build targets only - this includes vmlinux, arch specific targets, clean targets and others. In general all targets except *config targets.
 
 ifeq ($(KBUILD_EXTMOD),)
 # Additional helpers built in scripts/
@@ -1377,6 +1353,7 @@ install-dir := $(if $(INSTALL_MOD_DIR),$(INSTALL_MOD_DIR),extra)
 PHONY += _emodinst_
 _emodinst_:
 	$(Q)mkdir -p $(MODLIB)/$(install-dir)
+	# [ Linux ] $@ modinst
 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
 
 PHONY += _emodinst_post

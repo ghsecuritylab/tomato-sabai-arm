@@ -6,6 +6,8 @@ else
 UTILS := wl
 endif
 
+.PHONY: all
+
 all: $(UTILS)
 
 clean:
@@ -13,23 +15,29 @@ clean:
 
 ifneq ($(wildcard $(SRCBASE)/wl/$(PLATFORM)/wl),)
 wl:
+	@echo [ prebuilt ] CP $@
 	@cp -f $(SRCBASE)/wl/$(PLATFORM)/wl wl
 else
 wl: wl_exe.o
-	$(CC) $(CCFLAGS) -DBCMWPA2 -o $@ $<
+	@echo [ prebuilt ] CC $@
+	@$(CC) $(CCFLAGS) -DBCMWPA2 -o $@ $<
+
 endif
 
 ifneq ($(wildcard $(SRCBASE)/wl/$(PLATFORM)/nas),)
 nas:
+	@echo [ prebuilt ] CP $@
 	@cp -f $(SRCBASE)/wl/$(PLATFORM)/nas nas
 endif
 
 ifneq ($(wildcard $(SRCBASE)/wl/$(PLATFORM)/eapd),)
 eapd:
+	@echo [ prebuilt ] CP $@
 	@cp -f $(SRCBASE)/wl/$(PLATFORM)/eapd eapd
 endif
 
 install: all
+	@echo [ prebuild ] installing...
 	install -d $(INSTALLDIR)/usr/sbin
 
 ifneq ($(wildcard $(SRCBASE)/wl/$(PLATFORM)/nas),)
