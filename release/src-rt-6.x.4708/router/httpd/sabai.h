@@ -3,9 +3,9 @@
 
 #define T_ISITAMAC(T_START,T_MAC) ( (T_MAC[T_START+2]==':')&&(T_MAC[T_START+5]==':')&&(T_MAC[T_START+8]==':')&&(T_MAC[T_START+11]==':')&&(T_MAC[T_START+14]==':') )
 
-#define _SABAI_FILE_LIMIT 12288
+#define _SABAI_FILE_LIMIT 16384
 #define _SABAI_FILE_BUFFER 32768
-#define _SABAI_FILE_RANGE_ERROR "File size was smaller than 16 or larger than 12288 characters (~12KiB).";
+#define _SABAI_FILE_LIMIT_ERROR "File size was smaller than 16 or larger than 16384 characters (16KiB).";
 #define _SABAI_FILE_BUFFER_ERROR "File size was smaller than 16 or larger than 32768 characters (32KiB).";
 #define SABAIWANUP "/tmp/script_wanup.sh"
 #define SABAIGW "/www/gw.sh"
@@ -18,7 +18,7 @@ int nvram_update(const char *variable, const char *value);
 char cleaner_script[]="\
 #!/bin/sh\n\
 cat /tmp/newovpn.in |\
- tr -d '\r' |\
+ tr -d '\\r' |\
  sed\
  -e '1,/^[^#]/{ /^#/d }'\
  -e '/## -----BEGIN RSA SIGNATURE-----/,$d'\
