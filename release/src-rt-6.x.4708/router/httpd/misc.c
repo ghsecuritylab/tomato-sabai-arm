@@ -355,6 +355,7 @@ static void print_ipv6_addrs(void)
 				break;
 		}
 	}
+
 	freeifaddrs(ifap);
 }
 
@@ -736,12 +737,6 @@ void asp_mmcid(int argc, char **argv) {
 	web_puts("\n};\n");
 }
 #endif
-
-void asp_wanup(int argc, char **argv)
-{
-	web_puts(check_wanup() ? "1" : "0");
-}
-
 
 void asp_wanup(int argc, char **argv)
 {
