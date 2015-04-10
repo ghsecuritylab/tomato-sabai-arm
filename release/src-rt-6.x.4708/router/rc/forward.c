@@ -2,8 +2,11 @@
 
 #include "rc.h"
 #include <arpa/inet.h>
+#include "table.h"
 
 extern char chain_wan_prerouting[];
+
+ipt_table_t tableTmp = IPT_TABLE_NAT;
 
 static const char tcpudp[2][4] = {"tcp", "udp"};
 
@@ -13,6 +16,8 @@ void ipt_forward(ipt_table_t table){
  char *nv, *nvp, *b;
  const char *proto, *vpnpf, *saddr, *xports, *iport, *iaddr, *desc, *c, *mdport; int n,i,j,v,vpn_up;
  char *wanvpn[2] = { wanip , vpnip };
+
+ tableTmp = table;
 
  vpn_up = ( (nvram_get_int("vpn_up")==1) && ( (strcmp(vpnif,"")!=0) && (strcmp(vpnip,"")!=0) ) );
  v=(vpn_up?3:1); // v=(1+(vpn_up<<1));
@@ -43,15 +48,18 @@ void ipt_forward(ipt_table_t table){
  if(table==IPT_TABLE_FILTER){
   if(nvram_get_int("wan_route")==1){ ipt_write("-I FORWARD -s %s/%s -j ACCEPT\n", wanip, nvram_safe_get("wan_netmask")); }
   if(vpn_up){
-   ipt_write("-I INPUT -i br0 -d %s -j DROP\n", vpnip);
-   ipt_write("-A FORWARD -i %s -j wanin\n", vpnif);
-   ipt_write("-A FORWARD -o %s -j wanout\n", vpnif);
-   ipt_write("-A FORWARD -i %s -j upnp\n", vpnif);
+  	ipt_write("-I INPUT -i br0 -d %s -j DROP\n", vpnip);
+   	ipt_write("-A FORWARD -i %s -j wanin\n", vpnif);
+   	ipt_write("-A FORWARD -o %s -j wanout\n", vpnif);
+   	if (nvram_get_int("upnp_enable") & 3) {
+   		ipt_write("-A FORWARD -i %s -j upnp\n", vpnif);
+   	}
   }
  }
  if((table==IPT_TABLE_NAT)&&vpn_up){
-  ipt_write("-A PREROUTING -d %s -j WANPREROUTING\n",vpnip);
-  ipt_write("-A PREROUTING -i %s -d %s/%s -j DROP\n",vpnif,lanip,nvram_safe_get("lan_netmask"));
+  	ipt_write("-A PREROUTING -d %s -j WANPREROUTING\n",vpnip);
+  //ipt_write("-A PREROUTING -i %s -d %s/%s -j DROP\n",vpnif,lanip,nvram_safe_get("lan_netmask")); // Was in *nat moved to *filter.
+
   ipt_write("-A POSTROUTING -o %s -j MASQUERADE\n", vpnif);
  }
 }

@@ -28,6 +28,8 @@
 #include <stdarg.h>
 #include <arpa/inet.h>
 #include <dirent.h>
+#include <stdlib.h>
+#include "table.h"
 
 static int web_lanport;
 wanface_list_t wanfaces;
@@ -827,7 +829,7 @@ static void nat_table(void)
 				if (ipt_source_strict(p, src, "tor", NULL))
 					ipt_write("-A PREROUTING %s -p tcp --dport 80 ! -d %s -j DNAT --to-destination %s:%s\n",
 						src, nvram_safe_get("lan_ipaddr"), nvram_safe_get("lan_ipaddr"), nvram_safe_get("tor_transport") );
-
+				
 				if (!c) break;
 				p = c + 1;
 			} while (*p);
@@ -873,7 +875,7 @@ static void nat_table(void)
 		    && (modem_ipaddr = nvram_safe_get("modem_ipaddr")) && *modem_ipaddr && !nvram_match("modem_ipaddr","0.0.0.0")
 		    && (!foreach_wif(1, NULL, is_sta)) )
 			ipt_write("-A POSTROUTING -o %s -d %s -j MASQUERADE\n", nvram_safe_get("wan_ifname"), modem_ipaddr);
-
+		
 		switch (nvram_get_int("nf_loopback")) {
 		case 1:		// 1 = forwarded-only
 		case 2:		// 2 = disable
@@ -922,6 +924,18 @@ static void filter_input(void)
 	int n;
 	char *p, *c;
 
+	char *lanip = nvram_safe_get("lan_ipaddr");
+	char *vpnif = nvram_safe_get("vpn_device");
+	char *vpnip = nvram_safe_get("vpn_ipaddr");
+	int vpn_up;
+
+	vpn_up = ( (nvram_get_int("vpn_up")==1) && ( (strcmp(vpnif,"")!=0) && (strcmp(vpnip,"")!=0) ) );
+
+	if((tableTmp==IPT_TABLE_NAT)&&vpn_up)
+	{
+		ipt_write("-A INPUT -i %s -d %s/%s -j DROP\n",vpnif,lanip,nvram_safe_get("lan_netmask"));
+	}
+
 	if ((nvram_get_int("nf_loopback") != 0) && (wanup)) {	// 0 = all
 		for (n = 0; n < wanfaces.count; ++n) {
 			if (*(wanfaces.iface[n].name)) {
@@ -958,7 +972,6 @@ static void filter_input(void)
 			"-A shlimit -m recent --set --name shlimit\n"
 			"-A shlimit -m recent --update --hitcount %d --seconds %s --name shlimit -j %s\n",
 			atoi(hit) + 1, sec, chain_in_drop);
-
 		if (n & 1) {
 			ipt_write("-A INPUT -p tcp --dport %s -m state --state NEW -j shlimit\n", nvram_safe_get("sshd_port"));
 			if (nvram_get_int("sshd_remote") && nvram_invmatch("sshd_rport", nvram_safe_get("sshd_port"))) {
@@ -982,6 +995,7 @@ static void filter_input(void)
 			"-A ftplimit -m recent --set --name ftp\n"
 			"-A ftplimit -m recent --update --hitcount %d --seconds %s --name ftp -j %s\n",
 			atoi(hit) + 1, sec, chain_in_drop);
+
 		ipt_write("-A INPUT -p tcp --dport %s -m state --state NEW -j ftplimit\n", nvram_safe_get("ftp_port"));
 	}
 #endif
@@ -1784,7 +1798,6 @@ int start_firewall(void)
 
 	fclose(ipt_file);
 	ipt_file = NULL;
-	
 #ifdef TCONFIG_IPV6
 	fclose(ip6t_file);
 	ip6t_file = NULL;
@@ -1832,7 +1845,6 @@ int start_firewall(void)
 
 		*/
 	}
-	
 #ifdef TCONFIG_IPV6
 	if (ipv6_enabled()) {
 		notice_set("ip6tables", "");
@@ -1900,7 +1912,6 @@ int start_firewall(void)
 #ifdef TCONFIG_TINC
 	run_tinc_firewall_script();
 #endif
-
 	run_nvscript("script_fire", NULL, 1);
 
 //* SABAI GW BEGIN */
