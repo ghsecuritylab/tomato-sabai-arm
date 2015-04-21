@@ -142,9 +142,9 @@ ifneq ($(ASUS_TRX),0)
 # for asus RT-N18U, RT-AC56U, RT-AC68U, RT-AC68R
 ifeq ($(ASUS_TRX),ASUS)
 ifeq ($(BCMSMP),y)
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabai-RT-AC56U $(V2) $(ASUS_TRX).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabai-RT-AC68U $(V2) $(ASUS_TRX).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabai-RT-AC68R $(V2) $(ASUS_TRX).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabai-RT-AC56U\ $(V2) \$(ASUS_TRX).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabai-RT-AC68U\ $(V2) \$(ASUS_TRX).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabai-RT-AC68R\ $(V2) \$(ASUS_TRX).trx
 else
 	ctools/trx_asus -i image/linux-lzma.trx -r RT-N18U,3.0.0.4,image/tomato-RT-N18U-$(V1)$(V2)-$(current_BUILD_DESC).trx
 endif
