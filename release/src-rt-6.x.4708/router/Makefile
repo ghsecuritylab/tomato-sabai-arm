@@ -193,8 +193,8 @@ obj-$(TCONFIG_MEDIA_SERVER) += libexif
 obj-$(TCONFIG_MEDIA_SERVER) += libid3tag
 obj-$(TCONFIG_MEDIA_SERVER) += libvorbis
 obj-$(TCONFIG_MEDIA_SERVER) += minidlna
-MEDIA_SERVER_STATIC=y
-#MEDIA_SERVER_STATIC :=
+#MEDIA_SERVER_STATIC=y
+MEDIA_SERVER_STATIC :=
 
 obj-y += libnfnetlink
 obj-y += miniupnpd
@@ -280,7 +280,6 @@ endif
 
 obj-y += wanuptime
 
-obj-$(TCONFIG_TCPDUMP) += lpcap tcpdump
 ifeq ($(TCONFIG_IPV6),y)
 export TCONFIG_IPV6 := y
 IPTABLES_IPV6_OPT := --enable-ipv6
@@ -359,13 +358,13 @@ kernel: $(LINUXDIR)/.config
 
 ifneq ($(TCONFIG_BCMARM),y)
 	@if ! grep -q "CONFIG_EMBEDDED_RAMDISK=y" $(LINUXDIR)/.config ; then \
-	    $(MAKE) -C $(LINUXDIR) zImage CC=$(KERNELCC); \
+	    $(MAKE) -C $(LINUXDIR) zImage CC=$(KERNELCC) $(PARALLEL_BUILD); \
 	fi
 	if grep -q "CONFIG_MODULES=y" $(LINUXDIR)/.config ; then \
-	    $(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC); \
+	    $(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC) $(PARALLEL_BUILD); \
 	fi
 ifeq ($(CONFIG_LINUX26),y)
-	 srctree=$(LINUXDIR) $(MAKE) -C $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed srctree=$(LINUXDIR)
+	$(MAKE) -C $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed srctree=$(LINUXDIR) $(PARALLEL_BUILD)
 endif
 else	# TCONFIG_BCMARM
 	$(MAKE) compressed-clean #shibby
@@ -388,14 +387,14 @@ endif   # TCONFIG_BCMARM
 
 ifneq ($(TCONFIG_BCMARM),y)
 lzma-loader:
-	$(MAKE) -C $(SRCBASE)/lzma-loader CROSS_COMPILE=$(CROSS_COMPILE) LD=$(LD)
+	$(MAKE) -C $(SRCBASE)/lzma-loader CROSS_COMPILE=$(CROSS_COMPILE) LD=$(LD) $(PARALLEL_BUILD)
 
 lzma-loader-install: lzma-loader
 	@$(SEP)
 endif
 
 kmod: dummy
-	$(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC)
+	$(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC) $(PARALLEL_BUILD)
 
 testfind:
 	cd $(TARGETDIR)/lib/modules/* && find -name "*.o" -exec mv -i {} . \; || true
@@ -839,9 +838,7 @@ sabaioldconfig: sabaikoldconf sabairoldconf sabaidependconf sabaibboldconf
 #
 
 busybox: dummy
-	@$(MAKE) -C busybox EXTRA_CFLAGS="-fPIC $(EXTRACFLAGS)"
-
-# V=1
+	@$(MAKE) -C busybox EXTRA_CFLAGS="-fPIC $(EXTRACFLAGS)" $(PARALLEL_BUILD)
 
 busybox-install:
 	rm -rf $(INSTALLDIR)/busybox
@@ -966,7 +963,7 @@ bridge-install:
 
 dnsmasq: $(if $(TCONFIG_DNSSEC),nettle,)
 	@$(SEP)
-	@$(MAKE) -C dnsmasq \
+	@$(MAKE) -C dnsmasq $(PARALLEL_BUILD) \
 	COPTS="$(if $(TCONFIG_DNSSEC),-I$(TOP)/nettle/include -I$(TOP)/gmp -DHAVE_DNSSEC -DHAVE_DNSSEC_STATIC,) \
 		$(if $(TCONFIG_IPV6),-DUSE_IPV6,-DNO_IPV6) \
 		$(if $(CONFIG_LINUX26),-DUSE_IPSET,-DNO_IPSET) \
@@ -1103,7 +1100,7 @@ iptables-1.4.x-clean:
 
 ppp:
 	@$(SEP)
-	$(MAKE) -C ppp/pppoecd $* INSTALLDIR=$(INSTALLDIR)/ppp $(if $(TCONFIG_IPV6),HAVE_INET6=y,)
+	$(MAKE) -C ppp/pppoecd $* INSTALLDIR=$(INSTALLDIR)/ppp $(if $(TCONFIG_IPV6),HAVE_INET6=y,) $(PARALLEL_BUILD)
 #	$(MAKE) -C ppp/pppoecd $* INSTALLDIR=$(INSTALLDIR)/ppp DFLAGS="-DDEBUG -DDEBUGALL"
 
 ppp-%:
@@ -1116,7 +1113,7 @@ rp-pppoe/src/stamp-h1: rp-pppoe/src/Makefile.in
 	@touch rp-pppoe/src/stamp-h1
 
 rp-pppoe: pppd rp-pppoe/src/stamp-h1
-	$(MAKE) -C rp-pppoe/src pppoe-relay rp-pppoe.so
+	$(MAKE) -C rp-pppoe/src pppoe-relay rp-pppoe.so $(PARALLEL_BUILD)
 
 rp-pppoe-clean:
 	-@$(MAKE) -C rp-pppoe/src clean
@@ -1174,7 +1171,7 @@ shared: busybox
 
 vsftpd: $(if $(TCONFIG_FTP_SSL),openssl,)
 	@$(SEP)
-	$(MAKE) -C vsftpd
+	$(MAKE) -C vsftpd $(PARALLEL_BUILD)
 
 vsftpd-install: vsftpd
 	install -D vsftpd/vsftpd $(INSTALLDIR)/vsftpd/usr/sbin/vsftpd
@@ -1470,7 +1467,7 @@ ntpclient: nvram$(BCMEX) shared
 
 dropbear: dropbear/config.h
 	@$(SEP)
-	@$(MAKE) -C dropbear PROGRAMS="dropbear dbclient dropbearkey scp" MULTI=1
+	@$(MAKE) -C dropbear PROGRAMS="dropbear dbclient dropbearkey scp" MULTI=1 $(PARALLEL_BUILD)
 
 dropbear-install:
 	install -D dropbear/dropbearmulti $(INSTALLDIR)/dropbear/usr/bin/dropbearmulti
@@ -1508,7 +1505,7 @@ sqlite/stamp-h1:
 	touch sqlite/stamp-h1
 
 sqlite: sqlite/stamp-h1
-	@$(MAKE) -C sqlite all
+	@$(MAKE) -C sqlite all $(PARALLEL_BUILD)
 
 sqlite-clean:
 	-@$(MAKE) -C sqlite clean
@@ -1557,7 +1554,7 @@ ffmpeg/stamp-h1: zlib
 	touch ffmpeg/stamp-h1
 
 ffmpeg: ffmpeg/stamp-h1 zlib
-	@$(MAKE) -C ffmpeg all
+	@$(MAKE) -C ffmpeg all $(PARALLEL_BUILD)
 
 ffmpeg-clean:
 	-@$(MAKE) -C ffmpeg clean
@@ -1582,7 +1579,7 @@ libogg/stamp-h1:
 	touch libogg/stamp-h1
 
 libogg: libogg/stamp-h1
-	@$(MAKE) -C libogg all
+	@$(MAKE) -C libogg all $(PARALLEL_BUILD)
 
 libogg-clean:
 	-@$(MAKE) -C libogg clean
@@ -1606,7 +1603,7 @@ flac/stamp-h1: libogg
 	touch flac/stamp-h1
 
 flac: flac/stamp-h1 libogg
-	@$(MAKE) -C flac/src/libFLAC all
+	@$(MAKE) -C flac/src/libFLAC all $(PARALLEL_BUILD)
 
 flac-clean:
 	-@$(MAKE) -C flac clean
@@ -1625,7 +1622,7 @@ jpeg/stamp-h1:
 	touch jpeg/stamp-h1
 
 jpeg: jpeg/stamp-h1
-	@$(MAKE) -C jpeg LIBTOOL="" O=o A=a CC=$(CC) AR2="touch" libjpeg.a libjpeg.so
+	@$(MAKE) -C jpeg LIBTOOL="" O=o A=a CC=$(CC) AR2="touch" libjpeg.a libjpeg.so $(PARALLEL_BUILD)
 	install -d $(TOP)/jpeg/staged/include
 	install -d $(TOP)/jpeg/staged/lib
 	install -d $(TOP)/jpeg/staged/bin
@@ -1678,7 +1675,7 @@ zlib/stamp-h1:
 	touch zlib/stamp-h1
 
 zlib: zlib/stamp-h1
-	@$(MAKE) -C zlib all
+	@$(MAKE) -C zlib all $(PARALLEL_BUILD)
 	@$(MAKE) -C zlib DESTDIR=$(TOP)/zlib/staged install
 
 zlib-clean:
@@ -1713,7 +1710,7 @@ libid3tag/stamp-h1: zlib
 	touch libid3tag/stamp-h1
 
 libid3tag: libid3tag/stamp-h1 zlib
-	@$(MAKE) -C libid3tag all
+	@$(MAKE) -C libid3tag all $(PARALLEL_BUILD)
 
 libid3tag-clean:
 	-@$(MAKE) -C libid3tag clean
@@ -1737,7 +1734,7 @@ libvorbis/stamp-h1: libogg
 	touch libvorbis/stamp-h1
 
 libvorbis: libvorbis/stamp-h1
-	@$(MAKE) -C libvorbis/lib all
+	@$(MAKE) -C libvorbis/lib all $(PARALLEL_BUILD)
 
 libvorbis-clean:
 	-@$(MAKE) -C libvorbis clean
@@ -1750,9 +1747,38 @@ ifneq ($(MEDIA_SERVER_STATIC),y)
 	$(STRIP) $(INSTALLDIR)/libvorbis/usr/lib/libvorbis.so.0
 endif
 
-minidlna: zlib sqlite ffmpeg libogg flac jpeg libexif libid3tag libvorbis
+minidlna/stamp-h1: zlib sqlite ffmpeg libogg flac jpeg libexif libid3tag libvorbis libiconv
+	cd minidlna && CC=$(CC) CXX=$(CXX) AR=$(AR) RANLIB=$(RANLIB) STRIP='mipsel-uclibc-strip' HOST=mipsel-linux \
+	CFLAGS="-Wall -Os -D_GNU_SOURCE $(EXTRACFLAGS) -D_FILE_OFFSET_BITS=64 \
+		-ffunction-sections -fdata-sections \
+		-I$(TOP)/ffmpeg/libavutil -I$(TOP)/ffmpeg/libavcodec -I$(TOP)/ffmpeg/libavformat \
+		-I$(TOP)/ffmpeg/libswscale -I$(TOP)/ffmpeg \
+		-I$(TOP)/flac/include -I$(TOP)/sqlite -I$(TOP)/jpeg \
+		-I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include \
+		-I$(TOP)/libvorbis/include \
+		-I$(TOP)/libiconv/include \
+		-I$(TOP)/sqlite" \
+	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC \
+		-L$(TOP)/zlib -L$(TOP)/sqlite/.libs -L$(TOP)/jpeg -L$(TOP)/libvorbis/lib/.libs \
+		-L$(TOP)/libogg/src/.libs -L$(TOP)/libexif/libexif/.libs -L$(TOP)/flac/src/libFLAC/.libs \
+		-L$(TOP)/ffmpeg/libavutil -L$(TOP)/ffmpeg/libavcodec -L$(TOP)/ffmpeg/libavformat \
+		-L$(TOP)/libid3tag/.libs -L$(TOP)/libiconv/lib/.libs" \
+	CPPFLAGS="-Wall -Os -D_GNU_SOURCE $(EXTRACFLAGS) -D_FILE_OFFSET_BITS=64 \
+		-ffunction-sections -fdata-sections \
+		-I$(TOP)/ffmpeg/libavutil -I$(TOP)/ffmpeg/libavcodec -I$(TOP)/ffmpeg/libavformat \
+		-I$(TOP)/ffmpeg/libswscale -I$(TOP)/ffmpeg \
+		-I$(TOP)/flac/include -I$(TOP)/sqlite -I$(TOP)/jpeg \
+		-I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include \
+		-I$(TOP)/libvorbis/include \
+		-I$(TOP)/libiconv/include \
+		-I$(TOP)/sqlite" \
+	LIBS="-lpthread -lexif -ljpeg -lsqlite3 -lavformat -lavutil -lavcodec -lid3tag -lFLAC -logg -lvorbis -lm -ldl -lz" \
+	$(CONFIGURE) --host=mipsel-linux --build=x86_64-linux-gnu
+	touch minidlna/stamp-h1
+
+minidlna: minidlna/stamp-h1
 	@$(SEP)
-	@$(MAKE) -C minidlna CC=$(CC) $(if $(MEDIA_SERVER_STATIC),STATIC=1,) minidlna
+	@$(MAKE) -C minidlna all $(PARALLEL_BUILD)
 
 minidlna-clean:
 	-@$(MAKE) -C minidlna clean
@@ -1760,7 +1786,7 @@ minidlna-clean:
 
 minidlna-install: minidlan
 	@$(SEP)
-	install -D minidlna/minidlna $(INSTALLDIR)/minidlna/usr/sbin/minidlna
+	install -D minidlna/minidlnad $(INSTALLDIR)/minidlna/usr/sbin/minidlna
 	$(STRIP) $(INSTALLDIR)/minidlna/usr/sbin/minidlna
 
 igmpproxy/src/Makefile: igmpproxy/src/Makefile.in
@@ -1770,7 +1796,7 @@ igmpproxy/src/Makefile: igmpproxy/src/Makefile.in
 
 igmpproxy: igmpproxy/src/Makefile
 	@$(SEP)
-	@$(MAKE) -C igmpproxy/src
+	@$(MAKE) -C igmpproxy/src $(PARALLEL_BUILD)
 
 igmpproxy-install: igmpproxy
 	install -D igmpproxy/src/igmpproxy $(INSTALLDIR)/igmpproxy/usr/sbin/igmpproxy
@@ -1889,7 +1915,7 @@ glib/stamp-h1:
 	touch glib/stamp-h1
 
 glib: glib/stamp-h1
-	@$(MAKE) -C glib
+	@$(MAKE) -C glib $(PARALLEL_BUILD)
 
 glib-clean:
 	-@$(MAKE) -C glib clean
@@ -1913,7 +1939,7 @@ nocat/stamp-h1: glib-install
 	touch nocat/stamp-h1
 
 nocat: nocat/stamp-h1
-	@$(MAKE) -C nocat 
+	@$(MAKE) -C nocat $(PARALLEL_BUILD)
 
 nocat-clean:
 	-@$(MAKE) -C nocat clean
@@ -2131,7 +2157,7 @@ lzo/stamp-h1:
 	touch lzo/stamp-h1
 
 lzo: lzo/stamp-h1
-	@$(MAKE) -C lzo 
+	@$(MAKE) -C lzo $(PARALLEL_BUILD)
 
 lzo-clean:
 	-@$(MAKE) -C lzo clean
@@ -2150,7 +2176,7 @@ openvpn/.conf: openssl lzo
 	CPPFLAGS="-I$(TOP)/lzo/include -I$(TOP)/openssl/include" \
 	$(CONFIGURE) --prefix= \
 	--with-crypto-library=openssl \
-	--disable-debug --disable-plugin-auth-pam --disable-plugin-down-root --with-plugindir=/lib --enable-management \
+	--disable-debug --disable-plugin-auth-pam --disable-plugin-down-root --with-plugindir=/lib --enable-management --enable-small \
 	--disable-selinux --disable-socks --enable-password-save \
 	OPENSSL_SSL_CFLAGS="-I$(TOP)/openssl/include" \
 	OPENSSL_SSL_LIBS="-L$(TOP)/openssl -lssl" \
@@ -2158,7 +2184,7 @@ openvpn/.conf: openssl lzo
 	touch openvpn/.conf
 
 openvpn: openvpn/.conf
-	@$(MAKE) -C openvpn
+	@$(MAKE) -C openvpn $(PARALLEL_BUILD)
 
 openvpn-clean:
 	-@$(MAKE) -C openvpn clean
@@ -2482,7 +2508,7 @@ apcupsd/stamp-h1:
 	touch apcupsd/stamp-h1
 
 apcupsd: apcupsd/stamp-h1
-	$(MAKE) -C apcupsd
+	$(MAKE) -C apcupsd $(PARALLEL_BUILD)
 
 apcupsd-clean:
 	-@$(MAKE) -C apcupsd clean
@@ -2502,7 +2528,7 @@ libsodium/stamp-h1:
 	touch libsodium/stamp-h1
 
 libsodium: libsodium/stamp-h1
-	$(MAKE) -C libsodium
+	$(MAKE) -C libsodium $(PARALLEL_BUILD)
 
 libsodium-install: libsodium
 	install -d $(INSTALLDIR)/libsodium/usr/lib
@@ -2633,4 +2659,4 @@ $(obj-y) $(obj-n) $(obj-clean) $(obj-install): dummy
 
 .PHONY: all clean distclean mrproper install package image
 .PHONY: conf mconf oldconf kconf kmconf config menuconfig oldconfig
-.PHONY: dummy libnet
+.PHONY: dummy libnet libpcap
