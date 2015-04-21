@@ -130,8 +130,8 @@ endif
 	@$(MAKE) -C btools
 	@$(MAKE) -C ctools
 
-	@rm -f image/tomato-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).trx
-	@rm -f image/tomato-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).bin
+	@rm -f image/sabato-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).trx
+	@rm -f image/sabato-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).bin
 
 ifneq ($(ASUS_TRX),0)
 	$(MAKE) -C ctools
@@ -142,9 +142,9 @@ ifneq ($(ASUS_TRX),0)
 # for asus RT-N18U, RT-AC56U, RT-AC68U, RT-AC68R
 ifeq ($(ASUS_TRX),ASUS)
 ifeq ($(BCMSMP),y)
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/tomato-RT-AC56U-$(V1)$(V2)-$(current_BUILD_DESC).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/tomato-RT-AC68U-$(V1)$(V2)-$(current_BUILD_DESC).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/tomato-RT-AC68R-$(V1)$(V2)-$(current_BUILD_DESC).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabato-RT-AC56U-$(V1)$(V2)-$(current_BUILD_DESC).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabato-RT-AC68U-$(V1)$(V2)-$(current_BUILD_DESC).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabato-RT-AC68R-$(V1)$(V2)-$(current_BUILD_DESC).trx
 else
 	ctools/trx_asus -i image/linux-lzma.trx -r RT-N18U,3.0.0.4,image/tomato-RT-N18U-$(V1)$(V2)-$(current_BUILD_DESC).trx
 endif
@@ -852,7 +852,32 @@ endif
 	@$(MAKE) setprofile N=$(TPROFILE) B=$(B) DESC="$(BUILD_DESC)" USB="$(USB)"
 	@$(MAKE) all
 
-## targets
+sabai:
+ifneq ($(CONFIG_LINUX26),y)
+	#! "Need configuration for Kernel 2.4 routers. (Minus EBTABLES=y NO_LIBOPT=y IPV6SUPP=y)";
+	exit 1
+endif
+	@$(MAKE) bin MIPS32=r2 OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y VLAN="$(VLAN)" TCPDUMP="$(TCPDUMP)" EBTABLES=y NO_LIBOPT=y IPV6SUPP=y
+
+sabaiE:
+	@$(MAKE) sabai LINKSYS_E=y NVRAM_SIZE=60
+
+sabaiA:
+	@$(MAKE) sabai BELKIN=y
+
+sabaiN:
+	@$(MAKE) sabai WNR3500LV2=y
+
+kasda:
+	@$(MAKE) bin KASDA_EXP=y MIPS32=r2 OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y VLAN=n TCPDUMP="$(TCPDUMP)" EBTABLES=y NO_LIBOPT=y IPV6SUPP=y
+
+## mini-USB - K24 only
+n:
+ifneq ($(CONFIG_LINUX26),y)
+	@$(MAKE) bin BBEXTRAS=y USBEXTRAS=y B=E BUILD_DESC="mini-USB" USB="USB"
+endif
+
+## VPN
 e:
 	@$(MAKE) bin OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y DNSCRYPT=n PPTPD=y NO_LIBOPT=y
 
