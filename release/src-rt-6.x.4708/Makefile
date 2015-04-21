@@ -882,6 +882,8 @@ r7000z:
 
 r7000init:
 	@$(MAKE) bin ARM=y NVRAM_64K=y NAND=y BCMSMP=y B=E IPV6SUPP=y OPENVPN=y BUILD_DESC="initial" NETGEAR_CHK="R7000" CTF=y BOARDID_FILE="compatible_r7000.txt" FW_CFG_FILE="ambitCfg-r7000.h"
+w1800re:
+	@$(MAKE) e MIPS32=r2 NVRAM_64K=y ASUS_TRX="W1800R"		
 
 setprofile:
 	echo '#ifndef TOMATO_PROFILE' > router/shared/tomato_profile.h
