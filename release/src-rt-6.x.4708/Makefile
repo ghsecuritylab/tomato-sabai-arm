@@ -130,8 +130,8 @@ endif
 	@$(MAKE) -C btools
 	@$(MAKE) -C ctools
 
-	@rm -f image/sabato-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).trx
-	@rm -f image/sabato-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).bin
+	@rm -f image/sabai-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).trx
+	@rm -f image/sabai-$(ND)$(current_BUILD_USB)$(if $(filter $(NVRAM_SIZE),0),,-NVRAM$(NVRAM_SIZE)K)-$(current_TOMATO_VER).$(V1)$(mips_rev)$(beta)$(V2)-$(current_BUILD_DESC).bin
 
 ifneq ($(ASUS_TRX),0)
 	$(MAKE) -C ctools
@@ -142,9 +142,9 @@ ifneq ($(ASUS_TRX),0)
 # for asus RT-N18U, RT-AC56U, RT-AC68U, RT-AC68R
 ifeq ($(ASUS_TRX),ASUS)
 ifeq ($(BCMSMP),y)
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabato-RT-AC56U-$(V1)$(V2)-$(current_BUILD_DESC).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabato-RT-AC68U-$(V1)$(V2)-$(current_BUILD_DESC).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabato-RT-AC68R-$(V1)$(V2)-$(current_BUILD_DESC).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabai-RT-AC56U-$(V1)$(V2)-$(current_BUILD_DESC).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabai-RT-AC68U-$(V1)$(V2)-$(current_BUILD_DESC).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabai-RT-AC68R-$(V1)$(V2)-$(current_BUILD_DESC).trx
 else
 	ctools/trx_asus -i image/linux-lzma.trx -r RT-N18U,3.0.0.4,image/tomato-RT-N18U-$(V1)$(V2)-$(current_BUILD_DESC).trx
 endif
@@ -867,6 +867,9 @@ sabaiA:
 
 sabaiN:
 	@$(MAKE) sabai WNR3500LV2=y
+
+sabaiT: 
+	@$(MAKE) sabai NVRAM_64K=y ASUS_TRX="W1800R"
 
 kasda:
 	@$(MAKE) bin KASDA_EXP=y MIPS32=r2 OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y VLAN=n TCPDUMP="$(TCPDUMP)" EBTABLES=y NO_LIBOPT=y IPV6SUPP=y
