@@ -161,6 +161,13 @@ endif
 	@echo ""
 endif
 
+ifeq ($(LINKSYS_P),y)
+	# Asus (RT-N10P) images
+	@btools/fpkg -i lzma-loader/loader.gz -i $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed/vmlinuz -a 1024 -i router/mipsel-uclibc/target.image \
+		-t image/"sabai $(V2) Asus RT-N10P.trx" \
+		>> fpkg.log
+endif
+
 ifneq ($(NETGEAR_CHK),0)
 	@echo "Creating Firmware for Netgear ARM devices .... "
 	ctools/objcopy -O binary -R .note -R .note.gnu.build-id -R .comment -S $(LINUXDIR)/vmlinux ctools/piggy
@@ -870,6 +877,9 @@ endif
 
 sabaiE:
 	@$(MAKE) sabai LINKSYS_E=y NVRAM_SIZE=60
+
+sabaiP:
+	@$(MAKE) sabai LINKSYS_P=y NVRAM_SIZE=32
 
 sabaiA:
 	@$(MAKE) sabai ASUS_BELKIN=y
