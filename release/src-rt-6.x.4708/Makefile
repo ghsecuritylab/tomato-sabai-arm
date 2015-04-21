@@ -174,7 +174,16 @@ ifneq ($(NETGEAR_CHK),0)
 	@echo "Cleanup ...."
 	@rm -rf image/linux-lzma.trx image/*image.chk
 endif
-
+ifeq ($(ASUS_BELKIN),y)
+	# Asus (RT-N16, RT-N66U_32K) images
+	@btools/fpkg -i lzma-loader/loader.gz -i $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed/vmlinuz -a 1024 -i router/mipsel-uclibc/target.image \
+		-t image/"sabai $(V2) $(if $(filter $(NVRAM_SIZE),0),,$(NVRAM_SIZE)kNV )Asus RT-N16 and RT-N66U.trx" \
+		>> fpkg.log
+	# Belkin (F7D3301, F7D3302, F7D4302, F5D8235v3) images
+	@btools/fpkg -i lzma-loader/loader.gz -i $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed/vmlinuz -a 1024 -i router/mipsel-uclibc/target.image \
+		-b 0x20090928,image/"sabai $(V2) Belkin F7D3302.bin" \
+		>> fpkg.log
+endif
 	@echo ""
 	@echo "-----------------"
 	@echo `cat router/shared/tomato_version` " ready"
@@ -863,7 +872,7 @@ sabaiE:
 	@$(MAKE) sabai LINKSYS_E=y NVRAM_SIZE=60
 
 sabaiA:
-	@$(MAKE) sabai BELKIN=y
+	@$(MAKE) sabai ASUS_BELKIN=y
 
 sabaiN:
 	@$(MAKE) sabai WNR3500LV2=y
