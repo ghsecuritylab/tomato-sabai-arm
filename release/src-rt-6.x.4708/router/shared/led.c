@@ -216,6 +216,7 @@ int do_led(int which, int mode)
 	static int w1800r[]     = { 255, -13,   255,  255,  255,  255,  255,   -12, 255,   -5};
 	static int d1800h[]     = { -12, -13,     8,  255,  255,  -10,  255,    15, 255,   11};
 	static int tdn6[]       = { 255,  -6,     8,  255,  255,  255,  255,   255, 255,  255};
+//                                 WLAN  DIAG  WHITE AMBER DMZ   AOSS  BRIDG MYST/USB 5G
 #endif
 #ifdef CONFIG_BCMWL6A
 	static int ac68u[]      = { 255, 255,   255,  255,  255,   -4,  255,    -0, -14,  255};

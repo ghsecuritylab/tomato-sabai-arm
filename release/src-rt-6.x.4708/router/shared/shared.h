@@ -34,14 +34,12 @@ extern const char *tomato_buildtime;
 extern const char *tomato_shortver;
 
 
+#ifdef DEBUG_NOISY
 #define _dprintf		cprintf
-/*
-# #ifdef DEBUG_NOISY
-# #define _dprintf		cprintf
-# #else
-# #define _dprintf(args...)	do { } while(0)
-# #endif
-*/
+#else
+#define _dprintf(args...)	do { } while(0)
+#endif
+
 
 // misc.c
 #define	WP_DISABLED		0		// order must be synced with def in misc.c
@@ -51,15 +49,6 @@ extern const char *tomato_shortver;
 #define	WP_PPPOE		4
 #define	WP_PPTP			5
 #define	WP_PPP3G		6
-
-/*
-#define	WP_DISABLED		0
-#define	WP_STATIC		1
-#define WP_DHCP			2
-#define	WP_PPPOE		3
-#define	WP_PPP3G		4
-*/
-
 
 #ifdef TCONFIG_IPV6
 #define	IPV6_DISABLED		0

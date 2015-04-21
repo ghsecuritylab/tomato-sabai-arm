@@ -271,7 +271,7 @@ static void shutdn(int rb)
 	set_action(ACT_REBOOT);
 
 	// Disconnect pppd - need this for PPTP/L2TP to finish gracefully
-//	stop_pptp();
+	stop_pptp();
 	stop_l2tp();
 
 	_dprintf("TERM\n");
@@ -501,6 +501,7 @@ static int init_vlan_ports(void)
 		dirty |= check_nv("vlan2ports", "0 5");
 		break;
 	case MODEL_RG200E_CA:
+		dirty |= check_nv("vlan1ports", "4 3 2 1 5*");
 		dirty |= check_nv("vlan2ports", "0 5");
 		break;
 	case MODEL_RTN10:
@@ -2217,9 +2218,9 @@ static int init_nvram(void)
 			nvram_set("wl1_hwaddr", nvram_safe_get("1:macaddr"));
 
 			// fix ssid according to 5G(eth2) and 2.4G(eth1) 
-			nvram_set("wl_ssid","Tomato50");
-			nvram_set("wl0_ssid","Tomato50");
-			nvram_set("wl1_ssid","Tomato24");
+			nvram_set("wl_ssid","Sabai50");
+			nvram_set("wl0_ssid","Sabai50");
+			nvram_set("wl1_ssid","Sabai24");
 		}
 		break;
 	case MODEL_D1800H:
@@ -2262,9 +2263,9 @@ static int init_nvram(void)
 			nvram_set("wl1_hwaddr", s);
 
 			// fix ssid according to 5G(eth2) and 2.4G(eth1) 
-			nvram_set("wl_ssid","Tomato50");
-			nvram_set("wl0_ssid","Tomato50");
-			nvram_set("wl1_ssid","Tomato24");
+			nvram_set("wl_ssid","Sabai50");
+			nvram_set("wl0_ssid","Sabai50");
+			nvram_set("wl1_ssid","Sabai24");
 
 			nvram_set("pci/2/1/maxp2ga0", "0x70");
 			nvram_set("pci/2/1/maxp2ga1", "0x70");
@@ -2336,9 +2337,9 @@ static int init_nvram(void)
 			nvram_set("blink_5g_interface","eth1");
 
 			// fix ssid according to 5G(eth1) and 2.4G(eth2) 
-			nvram_set("wl_ssid","Tomato50");
-			nvram_set("wl0_ssid","Tomato50");
-			nvram_set("wl1_ssid","Tomato24");
+			nvram_set("wl_ssid","Sabai50");
+			nvram_set("wl0_ssid","Sabai50");
+			nvram_set("wl1_ssid","Sabai24");
 
 			//force US country for 5G eth1, modified by bwq518
 			nvram_set("pci/1/1/ccode", nvram_safe_get("ccode"));
