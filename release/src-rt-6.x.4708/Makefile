@@ -148,7 +148,22 @@ ifeq ($(BCMSMP),y)
 else
 	ctools/trx_asus -i image/linux-lzma.trx -r RT-N18U,3.0.0.4,image/tomato-RT-N18U-$(V1)$(V2)-$(current_BUILD_DESC).trx
 endif
+
+ifeq ($(WNR3500LV2),1)
+	# Creating Firmware for Netgear WNR3500L v2..."
+	mipsel-uclibc-objcopy -O binary -g $(LINUXDIR)/vmlinux image/vmlinux.bin
+	$(WNRTOOL)/lzma e image/vmlinux.bin image/vmlinux.lzma
+	$(WNRTOOL)/trx -o image/tomato-wnr3500lv2.trx image/vmlinux.lzma $(SRCBASE)/router/mipsel-uclibc/target.image
+	rm -f image/vmlinux.bin image/vmlinux.lzma
+	cd image && touch rootfs
+#	cd image && $(WNRTOOL)/packet -k tomato-wnr3500lv2.trx -f rootfs -b $(BOARD_FILE) -ok kernel_image -oall kernel_rootfs_image -or rootfs_image -i $(fw_cfg_file) && rm -f rootfs && \
+#	cp kernel_rootfs_image.chk tomato-Netgear-3500Lv2-$(ND)$(current_BUILD_USB)-$(current_TOMATO_VER).$(current_TOMATO_V1)$(current_TOMATO_V2)-$(current_BUILD_DESC).chk
+	cd image && $(WNRTOOL)/packet -k tomato-wnr3500lv2.trx -f rootfs -b $(BOARD_FILE) -ok kernel_image -oall kernel_rootfs_image -or rootfs_image -i $(fw_cfg_file) && rm -f rootfs && \
+	cp kernel_rootfs_image.chk "sabai $(V2) Netgear-3500Lv2.chk"
+#	@echo "Cleanup ...."
+#	rm -f image/*image.chk image/*.trx
 endif
+
 # for dlink
 ifeq ($(ASUS_TRX),DLINK)
 	ctools/trx_asus -i image/linux-lzma.trx -r DIR868L,3.0.0.4,image/tomato-DIR868L-$(V1)$(V2)-$(current_BUILD_DESC).trx
@@ -885,7 +900,7 @@ sabaiA:
 	@$(MAKE) sabai ASUS_BELKIN=y
 
 sabaiN:
-	@$(MAKE) sabai WNR3500LV2=y
+	@$(MAKE) sabai WNR3500LV2=1
 
 sabaiT: 
 	@$(MAKE) sabai NVRAM_64K=y ASUS_TRX="W1800R"
