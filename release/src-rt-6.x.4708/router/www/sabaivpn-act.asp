@@ -36,7 +36,7 @@ function init(){ f=E('fom'); ls=E('license_status'); acc=E('activation_code'); g
 
 </script></head><body onload='init();' id='topmost'><form id='fom'><table id='container' cellspacing=0>
 <tr><td colspan=2 id='header'><a id='headlink' href=''><img src='' id='headlogo'></a>
-<div class='title' id='SVPNstatus'>Sabai</div><div class='version' id='subversion'>version <!-- SABAI-VERSION --></div></td></tr>
+<div class='title' id='SVPNstatus'>Sabai</div><div class='version' id='subversion'>version <% version(); %><!-- SABAI-VERSION --></div></td></tr>
 <tr id='body'><td id='navi'><script type='text/javascript'>navi()</script></td><td id='content'>
 
 <!-- / / / -->

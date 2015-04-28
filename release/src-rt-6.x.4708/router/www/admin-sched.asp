@@ -238,7 +238,7 @@ function init()
 <table id='container' cellspacing=0>
 <tr><td colspan=2 id='header'><a id='headlink' href='http://www.sabaitechnology.com'><img src='imgsabai.png' id='headlogo'></a>
 	<div class='title' id='SVPNstatus'><% sabaid(); %></div>
-	<div class='version' id='subversion'>on Tomato v<% version() %></div>
+	<div class='version' id='subversion'>version <% version() %></div>
 </td></tr>
 <tr id='body'><td id='navi'><% sabaaiMenu(); %></td>
 <td id='content' style='visibility:hidden'>
