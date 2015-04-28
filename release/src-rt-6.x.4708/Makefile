@@ -142,9 +142,9 @@ ifneq ($(ASUS_TRX),0)
 # for asus RT-N18U, RT-AC56U, RT-AC68U, RT-AC68R
 ifeq ($(ASUS_TRX),ASUS)
 ifeq ($(BCMSMP),y)
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabai-RT-AC56U\ $(V2) \$(ASUS_TRX).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabai-RT-AC68U\ $(V2) \$(ASUS_TRX).trx
-	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabai-RT-AC68R\ $(V2) \$(ASUS_TRX).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC56U,3.0.0.4,image/sabai-RT-AC56U-$(V2)-$(ASUS_TRX).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68U,3.0.0.4,image/sabai-RT-AC68U-$(V2)-$(ASUS_TRX).trx
+	ctools/trx_asus -i image/linux-lzma.trx -r RT-AC68R,3.0.0.4,image/sabai-RT-AC68R-$(V2)-$(ASUS_TRX).trx
 else
 	ctools/trx_asus -i image/linux-lzma.trx -r RT-N18U,3.0.0.4,image/tomato-RT-N18U-$(V1)$(V2)-$(current_BUILD_DESC).trx
 endif
@@ -162,6 +162,7 @@ ifeq ($(WNR3500LV2),1)
 	cp kernel_rootfs_image.chk "sabai $(V2) Netgear-3500Lv2.chk"
 #	@echo "Cleanup ...."
 #	rm -f image/*image.chk image/*.trx
+endif
 endif
 
 # for dlink
@@ -916,7 +917,7 @@ endif
 
 ## VPN
 e:
-	@$(MAKE) bin OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y DNSCRYPT=n PPTPD=y NO_LIBOPT=y
+	@$(MAKE) bin OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y DNSCRYPT=n PPTPD=y
 
 z:
 	@$(MAKE) bin OPENVPN=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y MEDIASRV=y IPV6SUPP=y B=E BUILD_DESC="AIO" USB="USB" NOCAT=y BTCLIENT=y TR_EXTRAS=y DNSCRYPT=y UPS=y PPTPD=y DNSSEC=y TINC=y
