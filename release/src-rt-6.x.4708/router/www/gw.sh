@@ -31,6 +31,11 @@ _start(){
    ip rule add from "$lan_prefix.$j" table $i
   done
  done
+
+ if [ $(nvram get gw_def) -eq 3 ]; then
+  ip rule add from 192.168.199.2 table main
+ fi
+
  _fin
 }
 _ds(){ service dhcpd restart; _start; }
