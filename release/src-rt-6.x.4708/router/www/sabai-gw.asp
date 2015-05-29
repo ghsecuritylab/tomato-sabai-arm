@@ -148,7 +148,9 @@ function savegw(){
   tmp = list[ sip[i] ];
   sip[i] = [ tmp.mac, tmp.ip, tmp.host ].join('<');
  }
- sip = sip.join('>') + '>';
+ if(sip.length != 0) {
+  sip = sip.join('>') + '>';
+ }
 
  que.drop('s_sabaigw.cgi',gw_response,'gw_def='+ def +'&dhcpd_static='+ sip +'&'+gateways.join('&')+'&_http_id='+nvram.http_id );
 
