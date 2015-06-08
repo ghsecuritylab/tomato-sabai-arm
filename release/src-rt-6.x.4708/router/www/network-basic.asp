@@ -448,6 +448,7 @@ function verifyFields(focused, quiet)
 		_f_wan_islan: 0,
 		_f_ppp_mlppp: 1,
 		_modem_ipaddr: 0,
+		_f_dhcpd_enable: 1,
 
 		_f_dns_1: 1,
 		_f_dns_2: 1,
@@ -1135,6 +1136,12 @@ function save()
 
 	fom.wan_islan.value = fom.f_wan_islan.checked ? 1 : 0;
 	fom.pptp_dhcp.value = fom.f_pptp_dhcp.checked ? 1 : 0;
+	
+	if (fom.f_dhcpd_enable.checked) {
+		fom.lan_proto.value  = 'dhcp';
+	} else {
+		fom.lan_proto.value  = 'static';
+	}
 
 	fom.wan_dns.value = joinAddr([fom.f_dns_1.value, fom.f_dns_2.value, fom.f_dns_3.value]);
 
@@ -1205,6 +1212,7 @@ function init()
 <input type='hidden' name='pptp_dhcp'>
 <input type='hidden' name='wan_dns'>
 <input type='hidden' name='ppp_mlppp'>
+<input type='hidden' name='lan_proto'>
 
 
 <div class='section-title'>WAN / Internet</div>
