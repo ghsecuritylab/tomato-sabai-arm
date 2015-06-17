@@ -1443,10 +1443,10 @@ static int init_nvram(void)
 			nvram_set("wl1_bw_cap", "7");
 			nvram_set("wl1_chanspec", "149/80");
 			nvram_set("wl1_nctrlsb", "lower");
-			nvram_set("0:ccode", "SG");
-			nvram_set("1:ccode", "SG");
-			nvram_set("wl_country", "SG");
-			nvram_set("wl_country_code", "SG");
+			nvram_set("0:ccode", "US");
+			nvram_set("1:ccode", "US");
+			nvram_set("wl_country", "US");
+			nvram_set("wl_country_code", "US");
 		}
 		break;
 	case MODEL_RTAC68U:
@@ -1485,10 +1485,10 @@ static int init_nvram(void)
 			nvram_set("wl1_bw_cap", "7");
 			nvram_set("wl1_chanspec", "149/80");
 			nvram_set("wl1_nctrlsb", "lower");
-			nvram_set("0:ccode", "SG");
-			nvram_set("1:ccode", "SG");
-			nvram_set("wl_country", "SG");
-			nvram_set("wl_country_code", "SG");
+			nvram_set("0:ccode", "US");
+			nvram_set("1:ccode", "US");
+			nvram_set("wl_country", "US");
+			nvram_set("wl_country_code", "US");
 		}
 		break;
 	case MODEL_R7000:
@@ -1527,8 +1527,9 @@ static int init_nvram(void)
 			nvram_set("wl1_bw_cap", "7");
 			nvram_set("wl1_chanspec", "149/80");
 			nvram_set("wl1_nctrlsb", "lower");
-			nvram_set("wl_country", "SG");
-			nvram_set("wl_country_code", "SG");
+			nvram_set("wl_country", "66");
+			nvram_set("wl_country_code", "66");
+			nvram_set("blink_wl", "1");
 
 			// bcm4360ac_defaults - fix problem of loading driver failed with code 21
 			nvram_set("pci/1/1/aa2g", "7");
@@ -1544,7 +1545,7 @@ static int init_nvram(void)
 			nvram_set("pci/1/1/boardtype", "0x661");
 			nvram_set("pci/1/1/cckbw202gpo", "0");
 			nvram_set("pci/1/1/cckbw20ul2gpo", "0");
-			nvram_set("pci/1/1/ccode", "EU");
+			nvram_set("pci/1/1/ccode", "US");
 			nvram_set("pci/1/1/devid", "0x43a1");
 			nvram_set("pci/1/1/dot11agduphrpo", "0");
 			nvram_set("pci/1/1/dot11agduplrpo", "0");
@@ -1619,7 +1620,7 @@ static int init_nvram(void)
 			nvram_set("pci/2/1/boardtype", "0x621");
 			nvram_set("pci/2/1/cckbw202gpo", "0");
 			nvram_set("pci/2/1/cckbw20ul2gpo", "0");
-			nvram_set("pci/2/1/ccode", "SG");
+			nvram_set("pci/2/1/ccode", "US");
 			nvram_set("pci/2/1/devid", "0x43a2");
 			nvram_set("pci/2/1/dot11agduphrpo", "0");
 			nvram_set("pci/2/1/dot11agduplrpo", "0");
@@ -1768,7 +1769,6 @@ static int init_nvram(void)
 			nvram_set("pci/2/1/tworangetssi5g", "0");
 			nvram_set("pci/2/1/txchain", "7");
 			nvram_set("pci/2/1/xtalfreq", "65535");
-
 		}
 		break;
 	case MODEL_DIR868L:
@@ -1808,8 +1808,8 @@ static int init_nvram(void)
 			nvram_set("wl1_bw_cap", "7");
 			nvram_set("wl1_chanspec", "149/80");
 			nvram_set("wl1_nctrlsb", "lower");
-			nvram_set("wl_country", "SG");
-			nvram_set("wl_country_code", "SG");
+			nvram_set("wl_country", "US");
+			nvram_set("wl_country_code", "US");
 
 			// bcm4360ac_defaults - fix problem of loading driver failed with code 21
 			nvram_set("pci/1/1/aa2g", "7");
@@ -1825,7 +1825,7 @@ static int init_nvram(void)
 			nvram_set("pci/1/1/boardtype", "0x661");
 			nvram_set("pci/1/1/cckbw202gpo", "0");
 			nvram_set("pci/1/1/cckbw20ul2gpo", "0");
-			nvram_set("pci/1/1/ccode", "EU");
+			nvram_set("pci/1/1/ccode", "US");
 			nvram_set("pci/1/1/devid", "0x43a1");
 			nvram_set("pci/1/1/dot11agduphrpo", "0");
 			nvram_set("pci/1/1/dot11agduplrpo", "0");
@@ -1900,7 +1900,7 @@ static int init_nvram(void)
 			nvram_set("pci/2/1/boardtype", "0x621");
 			nvram_set("pci/2/1/cckbw202gpo", "0");
 			nvram_set("pci/2/1/cckbw20ul2gpo", "0");
-			nvram_set("pci/2/1/ccode", "SG");
+			nvram_set("pci/2/1/ccode", "US");
 			nvram_set("pci/2/1/devid", "0x43a2");
 			nvram_set("pci/2/1/dot11agduphrpo", "0");
 			nvram_set("pci/2/1/dot11agduplrpo", "0");
@@ -2184,8 +2184,8 @@ static int init_nvram(void)
 			nvram_set("pci/2/1/ledbh3", "11");
 			nvram_set("pci/2/1/ledbh10", "7");
 
-			//force EU country for eth2
-			nvram_set("pci/2/1/ccode", "EU");
+			//force US country for eth2
+			nvram_set("pci/2/1/ccode", "US");
 #endif // TCONFIG_AC66U
 		}
 		break;
