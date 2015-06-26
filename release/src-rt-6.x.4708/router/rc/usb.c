@@ -20,6 +20,7 @@
 #include <sys/file.h>
 #include <sys/swap.h>
 
+
 /* Adjust bdflush parameters.
  * Do this here, because Tomato doesn't have the sysctl command.
  * With these values, a disk block should be written to disk within 2 seconds.
@@ -894,6 +895,38 @@ static inline void usbled_proc(char *device, int add)
 {
 	char *p;
 	char param[32];
+	//static char usbCount = 0;
+	DIR *usb2;
+	DIR *usb3;
+	
+	usb2 = opendir ("/sys/bus/usb/devices/2-1:1.0");
+	usb3 = opendir ("/sys/bus/usb/devices/2-2:1.0");
+
+ 	if (get_model() == MODEL_R7000) {
+		if(add) {
+			if (usb2 != NULL)
+			{
+				xstart("gpio", "disable", "18");	// LED#2 on gpio 18 is for USB2.0
+				(void) closedir (usb2);
+			}
+
+			if (usb3 != NULL)
+			{
+				xstart("gpio", "disable", "17");	// LED#1 on gpio 17 is for USB3.0
+				(void) closedir (usb3);
+			}
+		} else {
+			if (usb2 == NULL)
+			{
+				xstart("gpio", "enable", "18");
+			}
+
+			if (usb3 == NULL)
+			{
+				xstart("gpio", "enable", "17");
+			}
+		}
+	}
 
 	if (do_led(LED_USB, LED_PROBE) != 255) {
 		strncpy(param, device, sizeof(param));
