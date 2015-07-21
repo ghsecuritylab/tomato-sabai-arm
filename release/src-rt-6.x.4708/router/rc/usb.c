@@ -928,6 +928,32 @@ static inline void usbled_proc(char *device, int add)
 		}
 	}
 
+	if (get_model() == MODEL_RTAC56U) {
+		if(add) {
+			if (usb2 != NULL)
+			{
+				xstart("gpio", "disable", "0");		// LED#2 on gpio 0 is for USB2.0 (Experimentally)
+				(void) closedir (usb2);
+			}
+
+			if (usb3 != NULL)
+			{
+				xstart("gpio", "disable", "14");	// LED#1 on gpio 14 is for USB3.0 (Experimentally)
+				(void) closedir (usb3);
+			}
+		} else {
+			if (usb2 == NULL)
+			{
+				xstart("gpio", "enable", "0");
+			}
+
+			if (usb3 == NULL)
+			{
+				xstart("gpio", "enable", "14");
+			}
+		}
+	}
+
 	if (do_led(LED_USB, LED_PROBE) != 255) {
 		strncpy(param, device, sizeof(param));
 		if ((p = strchr(param, ':')) != NULL)
