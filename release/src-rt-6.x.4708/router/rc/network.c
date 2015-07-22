@@ -590,6 +590,18 @@ void restart_wl(void)
 		if (nvram_match("wl1_radio", "0"))
 			led(LED_5G, LED_OFF);
 	}
+
+	if (get_model() == MODEL_RTAC56U) {
+		xstart("gpio", "disable", "4");		// To let turn on/off LEDs
+		if ((nvram_match("wl0_radio", "1")) || (nvram_match("wl1_radio", "1")))
+		{
+			xstart("gpio", "disable", "6");
+		}
+		else
+		{
+			xstart("gpio", "disable", "6");
+		}
+	}
 }
 
 #ifdef CONFIG_BCMWL5
@@ -694,6 +706,18 @@ void start_wl(void)
 			led(LED_WLAN, LED_OFF);
 		if (nvram_match("wl1_radio", "0"))
 			led(LED_5G, LED_OFF);
+	}
+
+	if (get_model() == MODEL_RTAC56U) {
+		xstart("gpio", "disable", "4");		// To let turn on/off LEDs
+		if ((nvram_match("wl0_radio", "1")) || (nvram_match("wl1_radio", "1")))
+		{
+			xstart("gpio", "disable", "6");
+		}
+		else
+		{
+			xstart("gpio", "enable", "6");
+		}
 	}
 }
 
