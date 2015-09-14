@@ -19,34 +19,25 @@
 <!-- / / / -->
 
 <style type='text/css'>
-#upnp-grid .co1, #upnp-grid .co2 {
-	width: 12%;
-}
-#upnp-grid .co3 {
-	width: 15%;
-}
-#upnp-grid .co4 {
-	width: 8%;
-}
-#upnp-grid .co5 {
-	width: 53%;
-}
+#upnp-grid .co1, #upnp-grid .co2, #upnp-grid .co4, #upnp-grid .co5 { width: 10%; }
+#upnp-grid .co3 { width: 15%; }
 </style>
 
 <script type='text/javascript' src='debug.js'></script>
 
 <script type='text/javascript'>
+	var fom;
 
 /* REMOVE-BEGIN
 	!!TB - additional miniupnp settings
 REMOVE-END */
-//	<% nvram("vpn_service,upnp_enable,upnp_mnp,upnp_clean,upnp_secure,upnp_clean_interval,upnp_clean_threshold,upnp_min_port_ext,upnp_max_port_ext,upnp_min_port_int,upnp_max_port_int"); %>
+//	<% nvram("upnp_enable,upnp_mnp,upnp_clean,upnp_secure,upnp_clean_interval,upnp_clean_threshold,upnp_min_port_ext,upnp_max_port_ext,upnp_min_port_int,upnp_max_port_int"); %>
 
 // <% upnpinfo(); %>
 
 nvram.upnp_enable = fixInt(nvram.upnp_enable, 0, 3, 0);
 
-function submitDelete(proto, eport){ form.submitHidden('upnp.cgi', { remove_proto: proto, remove_eport: eport, _redirect: 'forward-upnp.asp' }); }
+function submitDelete(proto, eport){ form.submitHidden('upnp.cgi', { remove_proto: proto, remove_eport: eport, _redirect: 'firewall-upnp.asp' }); }
 function deleteData(data){ if (confirm('Delete ' + data[3] + ' ' + data[0] + ' -> ' + data[2] + ':' + data[1] + ' ?')) submitDelete(data[3], data[0]); }
 
 var ug = new TomatoGrid();
@@ -55,18 +46,25 @@ ug.rpDel = function(e) { deleteData(PR(e).getRowData()); }
 
 ug.setup = function() {
 	this.init('upnp-grid', 'sort delete');
-	this.headerSet(['External', 'Internal', 'Internal Address', 'Protocol', 'Description']);
+	this.headerSet(['External', 'Internal', 'IP Address', 'Protocol', 'Duration', 'Description']);
 	ug.populate();
 }
-
+// ['TCP 31000 192.168.134.5 31000 [Test] 0', 'TCP 31001 192.168.134.5 31001 [Test2] 0'];
 ug.populate = function() {
 	var i, j, r, row, data;
 	if (nvram.upnp_enable != 0) {
 		var data = mupnp_data.split('\n');
+//		alert(data.join('!~!'));
 		for (i = 0; i < data.length; ++i) {
-			r = data[i].match(/^(UDP|TCP)\s+(\d+)\s+(.+?)\s+(\d+)\s+\[(.*)\]$/);
-			if (r == null) continue;
-			row = this.insertData(-1, [r[2], r[4], r[3], r[1], r[5]]);
+			if (data[i] == null || data[i]=='') continue;
+			r = data[i].split(' ');
+
+			if( r[0]!='TCP' && r[0]!='UDP' ) continue;
+			if( r[1]<1 || r[1]>65535 ) continue;
+			if( r[3]<1 || r[3]>65535 ) continue;
+			r[2] = fixIP(r[2], false); if(r[2]==null) continue;
+
+			row = this.insertData(-1, [r[1], r[3], r[2], r[0], r[5], r[4]]);
 			if (!r[0]) { for (j = 0; j < 5; ++j) { elem.addClass(row.cells[j], 'disabled'); } }
 			for (j = 0; j < 5; ++j) { row.cells[j].title = 'Click to delete'; }
 		}
@@ -94,6 +92,11 @@ REMOVE-END */
 	E('_upnp_clean_threshold').disabled = (enable == 0) || (bc == 0);
 	elem.display(PR(E('_upnp_clean_interval')), (enable != 0) && (bc != 0));
 	elem.display(PR(E('_upnp_clean_threshold')), (enable != 0) && (bc != 0));
+
+	if(fom.upnp_min_port_ext.value < 2) fom.upnp_min_port_ext.value = 2;
+	if(fom.upnp_min_port_int.value < 2) fom.upnp_min_port_int.value = 2;
+	if(fom.upnp_max_port_ext.value > 65535) fom.upnp_max_port_ext.value = 65535;
+	if(fom.upnp_max_port_int.value > 65535) fom.upnp_max_port_int.value = 65535;
 
 	if ((enable != 0) && (bc != 0)) {
 		if (!v_range('_upnp_clean_interval', quiet, 60, 65535)) return 0;
@@ -125,10 +128,15 @@ REMOVE-END */
 	fom.upnp_clean.value = E('_f_upnp_clean').checked ? 1 : 0;
 	fom.upnp_secure.value = E('_f_upnp_secure').checked ? 1 : 0;
 
+	fom.f_upnp_clean.disabled = true;
+	fom.f_upnp_secure.disabled = true;
+	fom.f_enable_upnp.disabled = true;
+	fom.f_enable_natpmp.disabled = true;
+
 	form.submit(fom, 0);
 }
 
-function init(){ ug.recolor(); }
+function init(){ fom=E('_fom'); ug.setup(); ug.recolor(); verifyFields(null, 1); }
 
 /* REMOVE-BEGIN
 	!!TB - miniupnp
@@ -140,23 +148,23 @@ function submit_complete(){ reloadPage(); }
 <body onload='init()'>
 <form id='_fom' method='post' action='tomato.cgi'>
 <table id='container' cellspacing=0>
-<tr><td colspan=2 id='header'><a id='headlink' href=''><img src='' id='headlogo'></a>
-	<div class='title' id='SVPNstatus'>Sabai</div>
+<tr><td colspan=2 id='header'><a id='headlink' href='http://www.sabaitechnology.com'><img src='imgsabai.png' id='headlogo'></a>
+	<div class='title' id='SVPNstatus'><% sabaid(); %></div>
 	<div class='version' id='subversion'>version <% version(); %><!-- SABAI-VERSION --></div>
 </td></tr>
-<tr id='body'><td id='navi'><script type='text/javascript'>navi()</script></td>
+<tr id='body'><td id='navi'><% sabaaiMenu(); %></td>
 <td id='content'>
 
 
 <!-- / / / -->
 
-<input type='hidden' name='_nextpage' value='forward-upnp.asp'>
+<input type='hidden' name='_nextpage' value='firewall-upnp.asp'>
 <input type='hidden' name='_service' value='upnp-restart'>
 
 <input type='hidden' name='upnp_enable'>
-/* REMOVE-BEGIN
+<!-- REMOVE-BEGIN
 	!!TB - additional miniupnp settings
-REMOVE-END */
+REMOVE-END -->
 <input type='hidden' name='upnp_mnp'>
 <input type='hidden' name='upnp_clean'>
 <input type='hidden' name='upnp_secure'>
@@ -187,12 +195,12 @@ REMOVE-END */
 	null,
 	{ title: 'Allowed UPnP Ports', suffix: ' <small>(UPnP clients will only be allowed to map ports in the external range to ports in the internal range)</small>', },
 	{ title: 'External Port Range', indent: 2, multi: [
-		{ name: 'f_upnp_min_port_ext', type: 'text', maxlen: 6, size: 8, value: nvram.upnp_min_port_ext, suffix: ' - ' },
-		{ name: 'f_upnp_max_port_ext', type: 'text', maxlen: 6, size: 8, value: nvram.upnp_max_port_ext, suffix: ' <small>(Setting the lower bound here to less than 1024 may interfere with network services.)</small>' },
+		{ name: 'upnp_min_port_ext', type: 'text', maxlen: 6, size: 4, value: nvram.upnp_min_port_ext, suffix: ' - ' },
+		{ name: 'upnp_max_port_ext', type: 'text', maxlen: 6, size: 4, value: nvram.upnp_max_port_ext, suffix: ' <small>(Setting the external lower bound here to less than 1024 may interfere with network services.)</small>' },
 	] },
 	{ title: 'Internal Port Range', indent: 2, multi: [
-		{ name: 'f_upnp_min_port_int', type: 'text', maxlen: 6, size: 8, value: nvram.upnp_min_port_int, suffix: ' - ' },
-		{ name: 'f_upnp_max_port_int', type: 'text', maxlen: 6, size: 8, value: nvram.upnp_max_port_int },
+		{ name: 'upnp_min_port_int', type: 'text', maxlen: 6, size: 4, value: nvram.upnp_min_port_int, suffix: ' - ' },
+		{ name: 'upnp_max_port_int', type: 'text', maxlen: 6, size: 4, value: nvram.upnp_max_port_int, suffix: ' <small>Valid port ranges are from 2 to 65535.</small>' }
 	] },
 	null,
 	{ title: 'Show In My Network Places',  name: 'f_upnp_mnp',  type: 'checkbox',  value: (nvram.upnp_mnp == '1') }
@@ -211,9 +219,8 @@ REMOVE-END */
 </td></tr>
 </table>
 </form>
-/* REMOVE-BEGIN
+<!-- REMOVE-BEGIN
 	!!TB - added verifyFields
-REMOVE-END */
-<script type='text/javascript'>ug.setup();verifyFields(null, 1);</script>
+REMOVE-END -->
 </body>
 </html>

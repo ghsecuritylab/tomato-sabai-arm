@@ -149,17 +149,17 @@ function init()
 <body onload='init()'>
 <form id='_fom' method='post' action='tomato.cgi'>
 <table id='container' cellspacing=0>
-<tr><td colspan=2 id='header'><a id='headlink' href=''><img src='' id='headlogo'></a>
-	<div class='title' id='SVPNstatus'>Sabai</div>
+<tr><td colspan=2 id='header'><a id='headlink' href='http://www.sabaitechnology.com'><img src='imgsabai.png' id='headlogo'></a>
+	<div class='title' id='SVPNstatus'><% sabaid(); %></div>
 	<div class='version' id='subversion'>version <% version(); %><!-- SABAI-VERSION --></div>
 </td></tr>
-<tr id='body'><td id='navi'><script type='text/javascript'>navi()</script></td>
+<tr id='body'><td id='navi'><% sabaaiMenu(); %></td>
 <td id='content'>
 
 
 <!-- / / / -->
 
-<input type='hidden' name='_nextpage' value='basic-wfilter.asp'>
+<input type='hidden' name='_nextpage' value='firewall-wfilter.asp'>
 <input type='hidden' name='_nextwait' value='10'>
 <input type='hidden' name='_service' value='*'>
 

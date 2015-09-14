@@ -48,17 +48,17 @@ function save()
 <body>
 <form id='_fom' method='post' action='tomato.cgi'>
 <table id='container' cellspacing=0>
-<tr><td colspan=2 id='header'><a id='headlink' href=''><img src='' id='headlogo'></a>
-	<div class='title' id='SVPNstatus'>Sabai</div>
+<tr><td colspan=2 id='header'><a id='headlink' href='http://www.sabaitechnology.com'><img src='imgsabai.png' id='headlogo'></a>
+	<div class='title' id='SVPNstatus'><% sabaid(); %></div>
 	<div class='version' id='subversion'>version <% version(); %><!-- SABAI-VERSION --></div>
 </td></tr>
-<tr id='body'><td id='navi'><script type='text/javascript'>navi()</script></td>
+<tr id='body'><td id='navi'><% sabaaiMenu(); %></td>
 <td id='content'>
 
 
 <!-- / / / -->
 
-<input type='hidden' name='_nextpage' value='advanced-firewall.asp'>
+<input type='hidden' name='_nextpage' value='firewall-basic.asp'>
 <input type='hidden' name='_service' value='firewall-restart'>
 
 <input type='hidden' name='block_wan'>
@@ -71,7 +71,7 @@ function save()
 createFieldTable('', [
 	{ title: 'Respond to ICMP ping', name: 'f_icmp', type: 'checkbox', value: nvram.block_wan == '0' },
 	{ title: 'Allow multicast', name: 'f_multicast', type: 'checkbox', value: nvram.multicast_pass == '1' },
-	{ title: 'NAT loopback', name: 'nf_loopback', type: 'select', options: [[0,'All'],[1,'Forwarded Only'],[2,'Disabled']], value: fixInt(nvram.nf_loopback, 0, 2, 1) },
+	{ title: 'NAT loopback', name: 'nf_loopback', hidden: true, type: 'select', options: [[0,'All'],[1,'Forwarded Only'],[2,'Disabled']], value: fixInt(nvram.nf_loopback, 0, 2, 1) },
 	{ title: 'Enable SYN cookies', name: 'f_syncookies', type: 'checkbox', value: nvram.ne_syncookies != '0' },
 	{ title: 'Enable WAN route input', name: 'wan_route', type: 'checkbox', value: nvram.wan_route == '1' }
 ]);

@@ -109,17 +109,17 @@ function init()
 <body onload='init()'>
 <form name='_fom' id='_fom' method='post' action='tomato.cgi'>
 <table id='container' cellspacing=0>
-<tr><td colspan=2 id='header'><a id='headlink' href=''><img src='' id='headlogo'></a>
-	<div class='title' id='SVPNstatus'>Sabai</div>
+<tr><td colspan=2 id='header'><a id='headlink' href='http://www.sabaitechnology.com'><img src='imgsabai.png' id='headlogo'></a>
+	<div class='title' id='SVPNstatus'><% sabaid(); %></div>
 	<div class='version' id='subversion'>version <% version(); %><!-- SABAI-VERSION --></div>
 </td></tr>
-<tr id='body'><td id='navi'><script type='text/javascript'>navi()</script></td>
+<tr id='body'><td id='navi'><% sabaaiMenu(); %></td>
 <td id='content'>
 
 
 <!-- / / / -->
 
-<input type='hidden' name='_redirect' value='restrict-edit.asp'>
+<input type='hidden' name='_redirect' value='admin-restrict-edit.asp'>
 <input type='hidden' name='_commit' value='0'>
 <input type='hidden' name='rruleN' id='_rruleN' value=''>
 
@@ -129,9 +129,9 @@ function init()
 </div>
 
 <br>
-<script type='text/javascript'>show_notice1('<% notice("iptables"); %>');</script>
+<script type='text/javascript'>showNotice('<% notice("iptables"); %>');</script>
 <br>
-<script type='text/javascript'>show_notice1('<% notice("ip6tables"); %>');</script>
+<script type='text/javascript'>showNotice('<% notice("ip6tables"); %>');</script>
 
 <!-- / / / -->
 

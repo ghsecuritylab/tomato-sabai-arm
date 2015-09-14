@@ -86,17 +86,17 @@ function save()
 <body>
 <form id='_fom' method='post' action='tomato.cgi'>
 <table id='container' cellspacing=0>
-<tr><td colspan=2 id='header'><a id='headlink' href=''><img src='' id='headlogo'></a>
-	<div class='title' id='SVPNstatus'>Sabai</div>
+<tr><td colspan=2 id='header'><a id='headlink' href='http://www.sabaitechnology.com'><img src='imgsabai.png' id='headlogo'></a>
+	<div class='title' id='SVPNstatus'><% sabaid(); %></div>
 	<div class='version' id='subversion'>version <% version(); %><!-- SABAI-VERSION --></div>
 </td></tr>
-<tr id='body'><td id='navi'><script type='text/javascript'>navi()</script></td>
+<tr id='body'><td id='navi'><% sabaaiMenu(); %></td>
 <td id='content'>
 
 
 <!-- / / / -->
 
-<input type='hidden' name='_nextpage' value='admin-cifs.asp'>
+<input type='hidden' name='_nextpage' value='file-cifs.asp'>
 <input type='hidden' name='_nextwait' value='10'>
 <input type='hidden' name='_service' value='cifs-restart'>
 
@@ -106,7 +106,7 @@ function save()
 <div class='section-title'>CIFS Client</div>
 <div class='section'>
 <script type='text/javascript'>
-a = b = [0, '\\\\192.168.1.5\\shared_example', '', '', '', '', '', ''];
+a = b = [0, '\\\\192.168.199.5\\shared_example', '', '', '', '', '', ''];
 
 if (r = nvram.cifs1.match(/^(0|1)<(\\\\.+)<(.*)<(.*)<(.*)<(.*)<(.*)<(.*)$/)) a = r.splice(1, 8);
 if (r = nvram.cifs2.match(/^(0|1)<(\\\\.+)<(.*)<(.*)<(.*)<(.*)<(.*)<(.*)$/)) b = r.splice(1, 8);
@@ -144,7 +144,7 @@ createFieldTable('', [
 </script>
 </div>
 
-<script type='text/javascript'>show_notice1('<% notice("cifs"); %>');</script>
+<script type='text/javascript'>showNotice('<% notice("cifs"); %>');</script>
 
 
 <!-- / / / -->
