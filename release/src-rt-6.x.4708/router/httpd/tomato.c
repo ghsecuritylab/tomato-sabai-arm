@@ -1142,6 +1142,7 @@ static const nvset_t nvset_list[] = {
 	{ "usb_uhci",			V_RANGE(-1, 1)			},	// -1 - disabled, 0 - off, 1 - on
 	{ "usb_ohci",			V_RANGE(-1, 1)			},
 	{ "usb_usb2",			V_RANGE(-1, 1)			},
+	{ "usb_usb3",			V_RANGE(-1, 1)			},
 #if defined(LINUX26) && defined(TCONFIG_USB_EXTRAS)
 	{ "usb_mmc",			V_RANGE(-1, 1)			},
 #endif
@@ -1150,9 +1151,11 @@ static const nvset_t nvset_list[] = {
 	{ "usb_printer",		V_01				},
 	{ "usb_printer_bidirect",	V_01				},
 	{ "usb_fs_ext3",		V_01				},
+	{ "usb_fs_ext4",		V_01				},
 	{ "usb_fs_fat",			V_01				},
 #ifdef TCONFIG_NTFS
 	{ "usb_fs_ntfs",		V_01				},
+	{ "usb_ntfs_driver",		V_LENGTH(0, 10)			},
 #endif
 #ifdef TCONFIG_HFS
 	{ "usb_fs_hfs",			V_01				}, //!Victek

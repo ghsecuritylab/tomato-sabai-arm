@@ -47,7 +47,7 @@ textarea {
 
 <script type='text/javascript'>
 
-//	<% nvram("vpn_service,usb_enable,usb_uhci,usb_ohci,usb_usb2,usb_storage,usb_printer,usb_printer_bidirect,usb_automount,usb_fs_ext3,usb_fs_fat,usb_fs_ntfs,script_usbmount,script_usbumount,script_usbhotplug"); %>
+//	<% nvram("usb_enable,usb_uhci,usb_ohci,usb_usb2,usb_usb3,usb_mmc,usb_storage,usb_printer,usb_printer_bidirect,usb_automount,usb_fs_ext3,usb_fs_ext4,usb_fs_fat,usb_fs_ntfs,usb_ntfs_driver,usb_fs_hfs,script_usbmount,script_usbumount,script_usbhotplug,idle_enable,usb_3g"); %>
 //	<% usbdevices(); %>
 
 list = [];
@@ -261,14 +261,31 @@ function verifyFields(focused, quiet)
 	E('_f_uhci').disabled = b || nvram.usb_uhci == -1;
 	E('_f_ohci').disabled = b || nvram.usb_ohci == -1;
 	E('_f_usb2').disabled = b;
+	E('_f_usb3').disabled = b;
 	E('_f_print').disabled = b;
 	E('_f_storage').disabled = b;
 
+/* LINUX26-BEGIN */
+/* MICROSD-BEGIN */
+	E('_f_mmc').disabled = a || b || nvram.usb_mmc == -1;
+	elem.display(PR('_f_mmc'), nvram.usb_mmc != -1);
+/* MICROSD-END */
+/* LINUX26-END */
+
 	E('_f_ext3').disabled = b || a;
+	E('_f_ext4').disabled = b || a;
 	E('_f_fat').disabled = b || a;
+/* LINUX26-BEGIN */
+	E('_f_idle_enable').disabled = b || a;
+	E('_f_usb_3g').disabled = b;
+/* LINUX26-END */
 /* NTFS-BEGIN */
 	E('_f_ntfs').disabled = b || a;
+	E('_usb_ntfs_driver').disabled = b || a;
 /* NTFS-END */
+/* HFS-BEGIN */
+	E('_f_hfs').disabled = b || a; //!Victek
+/* HFS-END */
 	E('_f_automount').disabled = b || a;
 	E('_f_bprint').disabled = b || !E('_f_print').checked;
 
@@ -294,15 +311,31 @@ function save()
 	fom.usb_uhci.value = nvram.usb_uhci == -1 ? -1 : (E('_f_uhci').checked ? 1 : 0);
 	fom.usb_ohci.value = nvram.usb_ohci == -1 ? -1 : (E('_f_ohci').checked ? 1 : 0);
 	fom.usb_usb2.value = E('_f_usb2').checked ? 1 : 0;
+	fom.usb_usb3.value = E('_f_usb3').checked ? 1 : 0;
 	fom.usb_storage.value = E('_f_storage').checked ? 1 : 0;
 	fom.usb_printer.value = E('_f_print').checked ? 1 : 0;
 	fom.usb_printer_bidirect.value = E('_f_bprint').checked ? 1 : 0;
+
+/* LINUX26-BEGIN */
+/* MICROSD-BEGIN */
+	fom.usb_mmc.value = nvram.usb_mmc == -1 ? -1 : (E('_f_mmc').checked ? 1 : 0);
+/* MICROSD-END */
+/* LINUX26-END */
+
 	fom.usb_fs_ext3.value = E('_f_ext3').checked ? 1 : 0;
+	fom.usb_fs_ext4.value = E('_f_ext4').checked ? 1 : 0;
 	fom.usb_fs_fat.value = E('_f_fat').checked ? 1 : 0;
 /* NTFS-BEGIN */
 	fom.usb_fs_ntfs.value = E('_f_ntfs').checked ? 1 : 0;
 /* NTFS-END */
+/* HFS-BEGIN */
+	fom.usb_fs_hfs.value = E('_f_hfs').checked ? 1 : 0; //!Victek
+/* HFS-END */
 	fom.usb_automount.value = E('_f_automount').checked ? 1 : 0;
+/* LINUX26-BEGIN */
+	fom.idle_enable.value = E('_f_idle_enable').checked ? 1 : 0;
+	fom.usb_3g.value = E('_f_usb_3g').checked ? 1 : 0;
+/* LINUX26-END */
 
 	form.submit(fom, 1);
 }
@@ -334,15 +367,25 @@ function submit_complete()
 <input type='hidden' name='usb_uhci'>
 <input type='hidden' name='usb_ohci'>
 <input type='hidden' name='usb_usb2'>
+<input type='hidden' name='usb_usb3'>
+<input type='hidden' name='usb_mmc'>
 <input type='hidden' name='usb_storage'>
 <input type='hidden' name='usb_printer'>
 <input type='hidden' name='usb_printer_bidirect'>
 <input type='hidden' name='usb_fs_ext3'>
+<input type='hidden' name='usb_fs_ext4'>
 <input type='hidden' name='usb_fs_fat'>
-<!-- NTFS-BEGIN -->
+/* NTFS-BEGIN */
 <input type='hidden' name='usb_fs_ntfs'>
-<!-- NTFS-END -->
+/* NTFS-END */
+/* HFS-BEGIN */
+<input type='hidden' name='usb_fs_hfs'>
+/* HFS-END */
 <input type='hidden' name='usb_automount'>
+/* LINUX26-BEGIN */
+<input type='hidden' name='idle_enable'>
+<input type='hidden' name='usb_3g'>
+/* LINUX26-END */
 
 <div class='section-title'>USB Support</div>
 <div class='section'>
@@ -350,6 +393,7 @@ function submit_complete()
 
 createFieldTable('', [
 	{ title: 'Core USB Support', name: 'f_usb', type: 'checkbox', value: nvram.usb_enable == 1 },
+	{ title: 'USB 3.0 Support', indent: 2, name: 'f_usb3', type: 'checkbox', value: nvram.usb_usb3 == 1 },
 	{ title: 'USB 2.0 Support', indent: 2, name: 'f_usb2', type: 'checkbox', value: nvram.usb_usb2 == 1 },
 	{ title: 'USB 1.1 Support', indent: 2, multi: [
 		{ suffix: '&nbsp; OHCI &nbsp;&nbsp;&nbsp;', name: 'f_ohci', type: 'checkbox', value: nvram.usb_ohci == 1 },
@@ -362,16 +406,44 @@ createFieldTable('', [
 	{ title: 'USB Storage Support', name: 'f_storage', type: 'checkbox', value: nvram.usb_storage == 1 },
 		{ title: 'File Systems Support', indent: 2, multi: [
 			{ suffix: '&nbsp; Ext2 / Ext3 &nbsp;&nbsp;&nbsp;', name: 'f_ext3', type: 'checkbox', value: nvram.usb_fs_ext3 == 1 },
+			{ suffix: '&nbsp; Ext4 &nbsp;&nbsp;&nbsp;', name: 'f_ext4', type: 'checkbox', value: nvram.usb_fs_ext4 == 1 },
 /* NTFS-BEGIN */
 			{ suffix: '&nbsp; NTFS &nbsp;&nbsp;&nbsp;', name: 'f_ntfs', type: 'checkbox', value: nvram.usb_fs_ntfs == 1 },
 /* NTFS-END */
 			{ suffix: '&nbsp; FAT &nbsp;', name: 'f_fat', type: 'checkbox', value: nvram.usb_fs_fat == 1 }
+/* HFS-BEGIN */
+			,{ suffix: '&nbsp; HFS / HFS+ &nbsp;', name: 'f_hfs', type: 'checkbox', value: nvram.usb_fs_hfs == 1 }
+/* HFS-END */
 		] },
+/* NTFS-BEGIN */
+	{ title: 'NTFS Driver', indent: 2, name: 'usb_ntfs_driver', type: 'select', options: [
+			['ntfs3g','Open NTFS-3G driver'],
+/* TUXERA-BEGIN */
+			['tuxera','Tuxera driver'],
+/* TUXERA-END */
+/* PARAGON-BEGIN */
+			['paragon','Paragon driver'],
+/* PARAGON-END */
+		], value: nvram.usb_ntfs_driver },
+/* NTFS-END */
+/* LINUX26-BEGIN */
+/* MICROSD-BEGIN */
+		{ title: 'SD/MMC Card Support', indent: 2, name: 'f_mmc', type: 'checkbox', value: nvram.usb_mmc == 1 },
+/* MICROSD-END */
+/* LINUX26-END */
 		{ title: 'Automount', indent: 2, name: 'f_automount', type: 'checkbox',
 			suffix: ' <small>Automatically mount all partitions to sub-directories in <i>/mnt</i>.</small>', value: nvram.usb_automount == 1 },
 	{ title: 'Run after mounting', indent: 2, name: 'script_usbmount', type: 'textarea', value: nvram.script_usbmount },
 	{ title: 'Run before unmounting', indent: 2, name: 'script_usbumount', type: 'textarea', value: nvram.script_usbumount },
 	null,
+/* LINUX26-BEGIN */
+	{ title: 'HDD Spindown', name: 'f_idle_enable', type: 'checkbox',
+		suffix: ' <small>Spin down each HDD when idle. No need to use with flashdrive.</small>', value: nvram.idle_enable == 1 },
+	null,
+	{ title: 'USB 3G Modem support', name: 'f_usb_3g', type: 'checkbox',
+		suffix: ' <small>Before disconnecting 3G Modem from USB port, remember to uncheck box. If modem used usbserial module, you have to reboot router before unplug modem.</small>', value: nvram.usb_3g == 1 },
+	null,
+/* LINUX26-END */
 	{ title: 'Hotplug script<br><small>(called when any USB device is attached or removed)</small>', name: 'script_usbhotplug', type: 'textarea', value: nvram.script_usbhotplug },
 	null,
 	{ text: '<small>Some of the changes will take effect only after a restart.</small>' }

@@ -97,6 +97,12 @@ endif
 #	sed -i $(INSTALLDIR)/www/tomato.js -e "/MEDIA-SRV-BEGIN/,/MEDIA-SRV-END/d"
 #endif
 
+# Only include HFS/HFS+ option and pages when configured.
+ifneq ($(TCONFIG_HFS),y)
+	sed -i $(INSTALLDIR)/www/file-usb.asp -e "/HFS-BEGIN/,/HFS-END/d"
+	sed -i $(INSTALLDIR)/www/status-about.asp -e "/HFS-BEGIN/,/HFS-END/d"
+endif
+
 # Only include IPv6 options if IPv6 is configured in.
 ifneq ($(TCONFIG_IPV6),y)
 	cd $(INSTALLDIR)/www && \
@@ -162,6 +168,7 @@ endif
 		-e "/AES-BEGIN/d"	-e "/AES-END/d" \
 		-e "/IPV6-BEGIN/d"	-e "/IPV6-END/d" \
 		-e "/CTF-BEGIN/d"	-e "/CTF-END/d" \
+		-e "/HFS-BEGIN/d"	-e "/HFS-END/d"\
 		|| true; \
 	done
 
