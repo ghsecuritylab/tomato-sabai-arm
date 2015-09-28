@@ -77,6 +77,14 @@ endif
 #	sed -i $(INSTALLDIR)/www/admin-access.asp -e "/THEMES-BEGIN/,/THEMES-END/d"
 #endif
 
+## Only include CTF option if CTF module exists
+#	test -d $(SRCBASE)/ctf/linux || sed -i $(INSTALLDIR)/www/advanced-misc.asp -e "/CTF-BEGIN/,/CTF-END/d"
+
+# Only include the CTF configuration if CTF is configured in.
+ifneq ($(TCONFIG_CTF),y)
+	sed -i $(INSTALLDIR)/www/firewall-basic.asp -e "/CTF-BEGIN/,/CTF-END/d"
+endif
+
 # Only include NTFS settings if NTFS support is configured in.
 ifneq ($(TCONFIG_NTFS),y)
 	sed -i $(INSTALLDIR)/www/file-usb.asp -e "/NTFS-BEGIN/,/NTFS-END/d"
@@ -169,6 +177,7 @@ endif
 		-e "/IPV6-BEGIN/d"	-e "/IPV6-END/d" \
 		-e "/CTF-BEGIN/d"	-e "/CTF-END/d" \
 		-e "/HFS-BEGIN/d"	-e "/HFS-END/d"\
+		-e "/CTF-BEGIN/d"	-e "/CTF-END/d" \
 		|| true; \
 	done
 

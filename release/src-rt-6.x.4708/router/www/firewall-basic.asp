@@ -22,7 +22,7 @@
 
 <script type='text/javascript'>
 
-//	<% nvram("vpn_service,block_wan,multicast_pass,nf_loopback,ne_syncookies,wan_route"); %>
+//	<% nvram("vpn_service,block_wan,multicast_pass,nf_loopback,ne_syncookies,wan_route,ctf_disable"); %>
 
 function verifyFields(focused, quiet)
 {
@@ -36,10 +36,20 @@ function save()
 	if (!verifyFields(null, 0)) return;
 
 	fom = E('_fom');
+/* CTF-BEGIN */
+	fom.ctf_disable.value = E('_f_ctf_disable').checked ? 0 : 1;
+/* CTF-END */
+
 	fom.block_wan.value = E('_f_icmp').checked ? 0 : 1;
 	fom.multicast_pass.value = E('_f_multicast').checked ? 1 : 0;
 	fom.ne_syncookies.value = E('_f_syncookies').checked ? 1 : 0;
 	fom.wan_route.value = E('_wan_route').checked ? 1 : 0;
+/* CTF-BEGIN */
+    if (fom.ctf_disable.value != nvram.ctf_disable) {
+    	fom._reboot.value = '1';
+		form.submit(fom, 0);
+    }
+/* CTF-END */
 	form.submit(fom, 1);
 }
 </script>
@@ -64,6 +74,10 @@ function save()
 <input type='hidden' name='block_wan'>
 <input type='hidden' name='multicast_pass'>
 <input type='hidden' name='ne_syncookies'>
+<input type='hidden' name='_reboot' value='0'>
+<!-- CTF-BEGIN -->
+<input type='hidden' name='ctf_disable'>
+<!-- CTF-END -->
 
 <div class='section-title'>Firewall</div>
 <div class='section'>
@@ -73,7 +87,10 @@ createFieldTable('', [
 	{ title: 'Allow multicast', name: 'f_multicast', type: 'checkbox', value: nvram.multicast_pass == '1' },
 	{ title: 'NAT loopback', name: 'nf_loopback', hidden: true, type: 'select', options: [[0,'All'],[1,'Forwarded Only'],[2,'Disabled']], value: fixInt(nvram.nf_loopback, 0, 2, 1) },
 	{ title: 'Enable SYN cookies', name: 'f_syncookies', type: 'checkbox', value: nvram.ne_syncookies != '0' },
-	{ title: 'Enable WAN route input', name: 'wan_route', type: 'checkbox', value: nvram.wan_route == '1' }
+	{ title: 'Enable WAN route input', name: 'wan_route', type: 'checkbox', value: nvram.wan_route == '1' },
+/* CTF-BEGIN */
+	{ title: 'CTF (Cut-Through Forwarding)', name: 'f_ctf_disable', type: 'checkbox', value: nvram.ctf_disable != '1' },
+/* CTF-END */
 ]);
 </script>
 </div>
