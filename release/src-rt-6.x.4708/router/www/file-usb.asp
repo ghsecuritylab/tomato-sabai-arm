@@ -337,6 +337,12 @@ function save()
 	fom.usb_3g.value = E('_f_usb_3g').checked ? 1 : 0;
 /* LINUX26-END */
 
+	if ((fom.usb_usb2.value != nvram.usb_usb2) ||
+	  	(fom.usb_usb3.value != nvram.usb_usb3)) {
+    	fom._reboot.value = '1';
+		form.submit(fom, 0);
+    }
+
 	form.submit(fom, 1);
 }
 
@@ -386,6 +392,7 @@ function submit_complete()
 <input type='hidden' name='idle_enable'>
 <input type='hidden' name='usb_3g'>
 /* LINUX26-END */
+<input type='hidden' name='_reboot' value='0'>
 
 <div class='section-title'>USB Support</div>
 <div class='section'>
