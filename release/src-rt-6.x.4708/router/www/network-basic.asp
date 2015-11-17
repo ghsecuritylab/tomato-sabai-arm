@@ -153,12 +153,7 @@ function refreshBandWidth(uidx)
 		m.push(['1','40 MHz']);
 	}
 	if(acphy && selectedBand(uidx) == '1') {
-		if((eval('nvram.model') == 'RT-AC56U') ||
-		   (eval('nvram.t_fix1') == 'RT-AC68P')) {
-			//Not adding 80MHz
-		} else {
-			m.push(['3','80 MHz']);
-		}
+		m.push(['3','80 MHz']);
 	}
 
 	e = E('_wl'+u+'_nbw_cap');

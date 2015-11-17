@@ -1443,10 +1443,10 @@ static int init_nvram(void)
 			nvram_set("wl1_bw_cap", "7");
 			nvram_set("wl1_chanspec", "149/80");
 			nvram_set("wl1_nctrlsb", "lower");
-			nvram_set("0:ccode", "US");
-			nvram_set("1:ccode", "US");
-			nvram_set("wl_country", "US");
-			nvram_set("wl_country_code", "US");
+			nvram_set("0:ccode", "SG");
+			nvram_set("1:ccode", "SG");
+			nvram_set("wl_country", "SG");
+			nvram_set("wl_country_code", "SG");
 		}
 		break;
 	case MODEL_RTAC68U:
@@ -1485,10 +1485,10 @@ static int init_nvram(void)
 			nvram_set("wl1_bw_cap", "7");
 			nvram_set("wl1_chanspec", "149/80");
 			nvram_set("wl1_nctrlsb", "lower");
-			nvram_set("0:ccode", "US");
-			nvram_set("1:ccode", "US");
-			nvram_set("wl_country", "US");
-			nvram_set("wl_country_code", "US");
+			nvram_set("0:ccode", "SG");
+			nvram_set("1:ccode", "SG");
+			nvram_set("wl_country", "SG");
+			nvram_set("wl_country_code", "SG");
 		}
 		break;
 	case MODEL_R7000:
