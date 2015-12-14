@@ -1537,7 +1537,7 @@ Optional Features:
   --disable-debug         disable debugging support (disable gremlin and verb
                           7+ messages) [default=yes]
   --enable-small          enable smaller executable size (disable OCC, usage
-                          message, and verb 4 parm list) [default=no]
+                          message, and verb 4 parm list) [default=yes]
   --enable-password-save  allow --askpass and --auth-user-pass passwords to be
                           read from a file [default=yes]
   --enable-iproute2       enable support for iproute2 [default=no]
@@ -3048,8 +3048,8 @@ test "$program_suffix" != NONE &&
 ac_script='s/[\\$]/&&/g;s/;s,x,x,$//'
 program_transform_name=`$as_echo "$program_transform_name" | sed "$ac_script"`
 
-# expand $ac_aux_dir to an absolute path
-am_aux_dir=`cd $ac_aux_dir && pwd`
+# Expand $ac_aux_dir to an absolute path.
+am_aux_dir=`cd "$ac_aux_dir" && pwd`
 
 if test x"${MISSING+set}" != xset; then
   case $am_aux_dir in
@@ -3454,6 +3454,7 @@ END
     as_fn_error $? "Your 'rm' program is bad, sorry." "$LINENO" 5
   fi
 fi
+
 # Make sure we can run config.sub.
 $SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
   as_fn_error $? "cannot run $SHELL $ac_aux_dir/config.sub" "$LINENO" 5

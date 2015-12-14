@@ -64,9 +64,9 @@
 #undef TCONFIG_NGINX
   #define IF_TCONFIG_NGINX(...)
   #define IF_NOT_TCONFIG_NGINX(...) __VA_ARGS__
-#define TCONFIG_MEDIA_SERVER 1
-  #define IF_TCONFIG_MEDIA_SERVER(...) __VA_ARGS__
-  #define IF_NOT_TCONFIG_MEDIA_SERVER(...)
+#undef TCONFIG_MEDIA_SERVER
+  #define IF_TCONFIG_MEDIA_SERVER(...)
+  #define IF_NOT_TCONFIG_MEDIA_SERVER(...) __VA_ARGS__
 #define TCONFIG_FTP 1
   #define IF_TCONFIG_FTP(...) __VA_ARGS__
   #define IF_NOT_TCONFIG_FTP(...)
@@ -94,9 +94,9 @@
 #undef TCONFIG_NFS
   #define IF_TCONFIG_NFS(...)
   #define IF_NOT_TCONFIG_NFS(...) __VA_ARGS__
-#undef TCONFIG_SNMP
-  #define IF_TCONFIG_SNMP(...)
-  #define IF_NOT_TCONFIG_SNMP(...) __VA_ARGS__
+#define TCONFIG_SNMP 1
+  #define IF_TCONFIG_SNMP(...) __VA_ARGS__
+  #define IF_NOT_TCONFIG_SNMP(...)
 #undef TCONFIG_SDHC
   #define IF_TCONFIG_SDHC(...)
   #define IF_NOT_TCONFIG_SDHC(...) __VA_ARGS__
@@ -160,9 +160,9 @@
 #undef TCONFIG_BCMFA
   #define IF_TCONFIG_BCMFA(...)
   #define IF_NOT_TCONFIG_BCMFA(...) __VA_ARGS__
-#define TCONFIG_DNSSEC 1
-  #define IF_TCONFIG_DNSSEC(...) __VA_ARGS__
-  #define IF_NOT_TCONFIG_DNSSEC(...)
+#undef TCONFIG_DNSSEC
+  #define IF_TCONFIG_DNSSEC(...)
+  #define IF_NOT_TCONFIG_DNSSEC(...) __VA_ARGS__
 #undef TCONFIG_TINC
   #define IF_TCONFIG_TINC(...)
   #define IF_NOT_TCONFIG_TINC(...) __VA_ARGS__
