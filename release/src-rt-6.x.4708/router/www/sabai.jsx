@@ -8,7 +8,7 @@ function async(state){ var spinny=E('reg_spin'); if(spinny) spinny.style.display
 function vpnStatus(){
  var sv=false,vpn=false,ip=false,workingNow=false; var faultLimit = 10, vpnLimit = 4, vpnDelay = 15000, statusLimit = 10, statusDelay = 5000;
  function setVpnIp(resp){ workingNow=false;
-  if(ip=parseJson(resp)) sv.ip.innerHTML = 'IP: '+ (ip.ip||'Unknown') + ( (ip.city||ip.region||ip.country) ?'<br>':'') + (!ip.city?'': ip.city+ ((ip.region||ip.country)?', ':'') ) + (!ip.region?'': ip.region+ (ip.country?', ':'') ) + (ip.country||'');
+  if(ip=parseJson(resp)) sv.ip.innerHTML = 'IP: '+ (ip.ip||'Unknown') + ( (ip.city||ip.region_name||ip.country_name) ?'<br>':'') + (!ip.city?'': ip.city+ ((ip.region_name||ip.country_name)?', ':'') ) + (!ip.region_name?'': ip.region_name+ (ip.country_name?', ':'') ) + (ip.country_name||'');
  }
  function getVpnIp(){
   if(!vpn.up || !vpn.ready || (faultLimit--<0)) return;

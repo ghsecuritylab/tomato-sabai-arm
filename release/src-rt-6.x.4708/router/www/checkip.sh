@@ -1,1 +1,1 @@
-wget http://"$(nvram get srcnvrp)"/grabs/routerIP.php?plz=kthx -qO- 2>/dev/null || echo 'false'
+wget http://freegeoip.net/json/ -qO- 2>/dev/null || echo 'false'
